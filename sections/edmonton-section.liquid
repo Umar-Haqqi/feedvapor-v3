@@ -1,0 +1,218 @@
+<section class="edmonton-section">
+  <h1>Reigning Supreme as The Best Vape Store in Edmonton - FEED Vapor</h1>
+  <a href="https://feedvapor.com/"><p>Visit our home page</p></a>
+  <p>
+    As one of the largest cities in Canada, you’ll find numerous vape stores exist in Edmonton, and new ones continue
+    opening up throughout the city. This increase isn’t merely coincidental. The reality is that the number of vapers
+    across Canada is rapidly rising as people eschew cigarettes for a more flavorful and less harmful alternative.
+  </p>
+  <p>
+    Among the various vape stores in Edmonton, one stands out among the competition, and that is FEED Vapor. Our online
+    store is the best vape store in Edmonton for various reasons. A well-decorated storefront isn’t what makes a vape
+    store better than others. It’s the product and the customer service.
+  </p>
+  <p>
+    At FEED, we’ve always been committed to providing exceptional customer service. Moreover, we highly value your
+    customer experience. That’s why we’ve went out of our way to perfect the entire process, from the moment you find
+    out about us till the moment you purchase our products.
+  </p>
+  <p>
+    Born to help you break out of the mold and stand out from the herd, every product we make has undergone considerable
+    experimentation and deliberation. Our products are designed with you - the Canadian vaper - in mind.
+  </p>
+  <p>
+    Our brand is inspired by streetwear influences and it shows in our packaging and our product design. We don’t want
+    FEED to just be another vape manufacturer like the rest of the vape corporations out there. We want to have a
+    stronger relationship with you, and we believe that’s only possible by helping you express yourself. That’s
+    precisely why we value individuality and authenticity.
+  </p>
+  <h3>Why is FEED Vapor the Best Vape Store in Edmonton</h3>
+  <p>
+    Calling ourselves the best vape store in Edmonton might seem boisterous, but we genuinely believe in this statement.
+    Our commitment to customer experience means you get the best products that undergone rigorous refinement. We design
+    our products to elevate your vaping experience, not just be interchangeable with other brands out there.
+  </p>
+  <p>
+    As a result, not only do our vape devices feature cutting-edge technology such as neo mesh coils and
+    state-of-the-art batteries, but they’re also designed to maximize your satisfaction as you puff on your favorite
+    flavor. We accomplish this by including an adjustable airflow mechanism in all our devices. Similarly, our devices
+    are also sleek and feature ergonomic mouthpieces for your enjoyment.
+  </p>
+  <h3>Buy a Vape Online in Edmonton from FEED Vapor</h3>
+  <p>
+    The best part about buying a vape from FEED vapor is that you get the highest quality vape devices without ever
+    leaving the comfort of your own home. All you need is the internet. Just go through our store and find the device
+    and flavor you’re looking for. Place an order, kick back, and wait for delivery. It’s really as simple as that.
+  </p>
+  <p>
+    We have a wide variety of products in our store because we believe everyone has different tastes and preferences,
+    and we want to cater to all our Canadian vapers. New vapers might prefer to go for the FEED FREEZIE series while
+    experienced vapers might opt for the FEED SYNC. Regardless of your tastes, you’ll find what you’re looking for here.
+  </p>
+  <h3>FEED SYNC in Edmonton at Your Favorite Vape Store</h3>
+  <p>
+    The FEED SYNC is a product like no other. We proudly call it the smartest vape on the market because it can connect
+    to your smartphone and be used to view social media updates, text notifications, and even answer or decline phone
+    calls. The device features a cutting-edge touchscreen LED and can be used in four different power modes. However,
+    more importantly, the FEED SYNC is a product that’s built to last. You can draw 25K puffs from it without worrying
+    about running out.
+  </p>
+
+  <!-- Start Feed Sync Product Slider -->
+  <div class="slider product-slider-wrapper">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for product in collections['feed-sync-25k-disposable-vape'].products %}
+          <div class="swiper-slide">
+            <div>
+              {% render 'custom-card',
+                card_product: product,
+                is_out_of_stock: false,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: section.settings.image_shape,
+                show_shop_now: true,
+                section_id: section.id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+    </div>
+  </div>
+  <!-- End Feed Sync Product Slider -->
+
+  <h3>FEED FREEZIE in Edmonton at the Best Vape Store in Edmonton</h3>
+  <p>
+    The FEED FREEZIE is our signature line of disposable vapes. It’s available in ten different flavors. The FREEZIE
+    line is perfect for vapers looking for a disposable vape that outperforms other disposable vapes on the market, and
+    it’s only available at the best vape store in Edmonton.
+  </p>
+
+  <!-- Start Feed Freezie Product Slider -->
+  <div class="slider">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for product in collections['feed-freezie-disposable-pods'].products %}
+          <div class="swiper-slide">
+            <div>
+              {% render 'custom-card',
+                card_product: product,
+                is_out_of_stock: false,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: section.settings.image_shape,
+                show_shop_now: true,
+                section_id: section.id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+    </div>
+  </div>
+  <!-- End Feed Freezie Product Slider -->
+</section>
+
+<style>
+  .slider {
+    position: relative;
+    height: 100%;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 0,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      "@0.00": {
+        slidesPerView: 1,
+        spaceBetween: 10,
+      },
+      "@0.75": {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      "@1.00": {
+        slidesPerView: 3,
+        spaceBetween: 40,
+      },
+      "@1.50": {
+        slidesPerView: 4,
+        spaceBetween: 50,
+      },
+    },
+  });
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Feed Vapor",
+    "image": "https://feedvapor.com/cdn/shop/files/FEED_WHITE.svg?v=1713363727&width=120",
+    "@id": "",
+    "url": "https://feedvapor.com/pages/best-online-vape-store-in-edmonton",
+    "telephone": "",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "",
+      "addressLocality": "Edmonton",
+      "addressRegion": "AB",
+      "postalCode": "",
+      "addressCountry": "CA"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 53.5461,
+      "longitude": 113.4937
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
+    },
+    "sameAs": "https://www.instagram.com/feedvapor"
+  }
+</script>
+
+{% schema %}
+  {
+  "name": "Edmonton-section",
+  "settings": [
+    {
+      "type":"text",
+      "label":"Heading",
+      "id":"Heading"
+    }
+  ],
+  "presets":[
+    {
+      "name": "Edmonton-section"
+    }
+  ]
+}
+{% endschema %}

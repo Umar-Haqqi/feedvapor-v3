@@ -1,0 +1,214 @@
+<img
+  src="https://cdn.shopify.com/s/files/1/0625/2140/9636/files/FEED_NEW_YEAR.png?v=1734785689"
+  width="100%"
+  height="100%"
+  alt="new year banner"
+>
+<section class="edmonton-section">
+  <h1 class="new-year-main-heading">Feed Vapes New Year Sale – New Year Vape Sales in Canada!</h1>
+  <!-- <a href="https://feedvapor.com/"><p>Visit our home page</p></a> -->
+  <p>
+    Celebrate the New Year 2025 with amazing savings at Feed Vapes! Enjoy exclusive New Year Vape Sales on Feed Sync,
+    Feed Freezie, and Feed Pods. Plus, <b>get Buy 3, Get 1 Free</b>, and stock up for the year ahead. Don't miss out on
+    New Year Disposable vape sales in Canada!
+  </p>
+
+  <h2 class="coll-heading">Feed Sync</h2>
+  <p>
+    Experience the ultimate in convenience and flavor with Feed Sync (Smart Vape). Take advantage of our New Year offer
+    and <b>get Buy 3, Get 1 Free</b> — the best price to enjoy this high-quality device at a fraction of the cost.
+  </p>
+  <!-- Start Feed Sync Product Slider -->
+  <div class="slider">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for product in collections['feed-sync-25k-disposable-vape'].products %}
+          <div class="swiper-slide">
+            <div>
+              {% render 'custom-card',
+                card_product: product,
+                is_out_of_stock: false,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: section.settings.image_shape,
+                show_shop_now: true,
+                section_id: section.id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+    </div>
+  </div>
+  <!-- End Feed Sync Product Slider -->
+
+  <h2 class="coll-heading">FEED FREEZIE</h2>
+  <p>
+    Cool off with Feed Freezie and enjoy a refreshing vape experience! Get in on our exclusive New Year sale,
+    <b>get Buy 3, Get 1 Free</b>, and save on your next favorite flavor.
+  </p>
+  <!-- Start Feed Freezie Product Slider -->
+  <div class="slider">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for product in collections['feed-freezie-disposable-pods'].products %}
+          <div class="swiper-slide">
+            <div>
+              {% render 'custom-card',
+                card_product: product,
+                is_out_of_stock: false,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: section.settings.image_shape,
+                show_shop_now: true,
+                section_id: section.id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+    </div>
+  </div>
+  <!-- End Feed Freezie Product Slider -->
+
+  <h2 class="coll-heading">Feed Pods</h2>
+  <p>
+    Ready to elevate your vaping experience? Feed Pods deliver a smooth, satisfying hit every time. Don’t miss our New
+    Year sale — <b>Buy 3, Get 1 Free</b>, and save on the best vaping tech in Canada!
+  </p>
+  <!-- Start Feed Freezie Product Slider -->
+  <div class="slider">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for product in collections['vape-pods-in-canada'].products %}
+          <div class="swiper-slide">
+            <div>
+              {% render 'custom-card',
+                card_product: product,
+                is_out_of_stock: false,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: section.settings.image_shape,
+                show_shop_now: true,
+                section_id: section.id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+    </div>
+  </div>
+  <!-- End Feed Freezie Product Slider -->
+</section>
+
+<style>
+  .new-year-main-heading{
+    margin-bottom: 40px !important;
+  }
+  .slider {
+    position: relative;
+    height: 100%;
+  }
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+  .coll-heading{
+    text-transform: uppercase;
+    margin-top: 50px;
+    margin-bottom: 20px;
+  }
+</style>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 0,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      "@0.00": {
+        slidesPerView: 1.5,
+        spaceBetween: 10,
+      },
+      "@0.75": {
+        slidesPerView: 2.5,
+        spaceBetween: 10,
+      },
+      "@1.00": {
+        slidesPerView: 3.5,
+        spaceBetween: 10,
+      },
+      "@1.50": {
+        slidesPerView: 4.5,
+        spaceBetween: 10,
+      },
+    },
+  });
+</script>
+
+<!--
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "Feed Vapor",
+      "image": "https://feedvapor.com/cdn/shop/files/FEED_WHITE.svg?v=1713363727&width=120",
+      "@id": "",
+      "url": "https://feedvapor.com/pages/best-online-vape-store-in-edmonton",
+      "telephone": "",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "",
+        "addressLocality": "Edmonton",
+        "addressRegion": "AB",
+        "postalCode": "",
+        "addressCountry": "CA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 53.5461,
+        "longitude": 113.4937
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "sameAs": "https://www.instagram.com/feedvapor"
+    }
+  </script>
+-->
+
+{% schema %}
+  {
+  "name": "new-year-sale",
+  "settings": [
+    {
+      "type":"text",
+      "label":"Heading",
+      "id":"Heading"
+    }
+  ],
+  "presets":[
+    {
+      "name": "new-year-sale"
+    }
+  ]
+}
+{% endschema %}

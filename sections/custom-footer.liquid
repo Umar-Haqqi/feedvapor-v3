@@ -1,0 +1,203 @@
+<section id="custom_footer" class="custom-footer">
+  <div class="custom-footer-container">
+    <div class="logo">
+      <a href="#">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_WHITE.svg?v=1713144105"
+          alt="footer-logo"
+          width="auto"
+          height="auto"
+        >
+      </a>
+    </div>
+    <div class="quick-links footer-column">
+      <h4>QUICK LINKS</h4>
+      <ul class="quick-links-list footer-list">
+        <li><a href="{{ shop.url }}/collections/feed-tank">Feed Tank</a></li>
+        <li><a href="{{ shop.url }}/pages/reward-programs">Reward Program</a></li>
+        <li><a href="{{ shop.url }}/collections/b-starter-kits">Starter Kits</a></li>
+        <li><a href="{{ shop.url }}/collections/pods-30k">30K Pod</a></li>
+        <li><a href="{{ shop.url }}/collections/vape-pods-in-canada">9K Pod</a></li>
+        <li><a href="{{ shop.url }}/collections/c-batteries">Batteries</a></li>
+        <li><a href="{{ shop.url }}/apps/page/wishlist">Wishlist</a></li>
+        <li><a href="{{ shop.url }}/blogs/news">Blogs</a></li>
+      </ul>
+    </div>
+    <div class="help-desk footer-column">
+      <h4>HELP DESK</h4>
+      <ul class="help-desk-list footer-list">
+        <li><a href="{{ shop.url }}/pages/contact">Contact Us</a></li>
+        <li><a href="{{ shop.url }}/pages/warranty-claims">Warranty Claims</a></li>
+        <li><a href="{{ shop.url }}/pages/wholesale-inquiries">Wholesale Inquiries</a></li>
+        <li><a href="{{ shop.url }}/pages/privacy-policy">Privacy Policy</a></li>
+        <li><a href="{{ shop.url }}/pages/terms-of-services">Terms of Service</a></li>
+        <li><a href="{{ shop.url }}/pages/vape-tax-information">Vape Tax Information</a></li>
+      </ul>
+    </div>
+    <div class="subscribe footer-column">
+      <h4>SUBSCRIBE FOR MORE...</h4>
+      <p>Stay up to date with our latest promotions</p>
+      {%- form 'customer', id: 'ContactFooter', class: 'footer__newsletter newsletter-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="newsletter-form__field-wrapper" style="display:flex;gap:10px">
+          <!-- editByMe -- remove the below .feild class -->
+          <div style="width: 250px">
+            <input
+              style="
+                border-radius: 5px !important;
+                border: none;
+                outline: none;
+                height: 40px;
+              "
+              id="NewsletterForm--{{ section.id }}"
+              type="email"
+              name="contact[email]"
+              class="field__input_custom_class field__input "
+              value="{{ form.email }}"
+              aria-required="true"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              {% if form.errors %}
+                autofocus
+                aria-invalid="true"
+                aria-describedby="ContactFooter-error"
+              {% elsif form.posted_successfully? %}
+                aria-describedby="ContactFooter-success"
+              {% endif %}
+              placeholder="EMAIL ADDRESS"
+              required
+            >
+            <!--
+              <label
+                class="field__label"
+                for="NewsletterForm--{{ section.id }}"
+                style="font-family: Helvetica;color: #ddd;font-size: 14px"
+              >
+                EMAIL ADDRESS
+              </label>
+            -->
+          </div>
+          <button
+            style="
+              color: #000;
+              background: #fff;
+              border-radius: 20px;
+              padding: 0px 20px;
+              border: 1px solid #fff;
+              font-family: HelveticaNeue_Bold;
+            "
+            type="submit"
+
+            name="commit"
+            id="Subscribe"
+            aria-label="{{ 'newsletter.button_label' | t }}"
+          >
+            <!-- {% render 'icon-arrow' %} -->
+            Submit
+          </button>
+          {%- if form.errors -%}
+            <small class="newsletter-form__message form__message" id="ContactFooter-error">
+              {%- render 'icon-error' -%}
+              {{- form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email -}}
+            </small>
+          {%- endif -%}
+        </div>
+        {%- if form.posted_successfully? -%}
+          <h3
+            class="newsletter-form__message newsletter-form__message--success form__message"
+            id="ContactFooter-success"
+            tabindex="-1"
+            autofocus
+          >
+            {% render 'icon-success' -%}
+            {{- 'newsletter.success' | t }}
+          </h3>
+        {%- endif -%}
+      {%- endform -%}
+      <!--
+        <div class="email-input">
+          <input type="text" placeholder="EMAIL ADDRESS">
+
+          <button>Submit</button>
+        </div>
+      -->
+
+      <div class="logos">
+        <a href="https://www.instagram.com/feedvapor"><i class="ri-instagram-line"></i></a>
+        <a href="https://www.tiktok.com/@feedvapor"><i class="ri-tiktok-fill"></i></a>
+      </div>
+      <p>2026 FEED. All Rights Reserved</p>
+    </div>
+    <div class="subscribe-mob footer-column">
+      <div class="logos footer-inner-column">
+        <a
+          href="https://www.instagram.com/feedvapor"
+          style="
+            text-decoration: none;
+            color: #fff;
+            font-size: 24px;
+          "
+          ><i
+            class="ri-instagram-line"
+            style="
+              text-decoration: none;
+              color: #fff;
+              font-size: 24px;
+            "
+          ></i
+        ></a>
+        <a
+          href="https://www.tiktok.com/@feedvapor"
+          style="
+            text-decoration: none;
+            color: #fff;
+            font-size: 24px;
+          "
+          ><i class="ri-tiktok-fill"></i
+        ></a>
+      </div>
+      <div class="mob-email footer-inner-column">
+        <a
+          href="{{ shop.url }}/pages/contact"
+          style="
+            text-decoration: none;
+            color: #fff;
+          "
+        >
+          <i class="ri-mail-line" style="font-size: 24px;"></i>
+          <p>Email Us</p>
+        </a>
+      </div>
+      <p style="font-size: 12px;">
+        <i class="ri-copyright-line" style="color: #fff"></i> 2026 FEED. All rights reserved
+      </p>
+    </div>
+  </div>
+  <div class="extra-info">
+    <p>
+      Not for Sale for Minors - Please note flavoured products are banned in Quebec and Nova Scotia. Products sold on this site may contain nicotine which is a highly addictive substance. -
+      WARNING: This product can expose you to chemicals including nicotine, which is known to cause birth defects or
+      other reproductive harm. Warning: Products sold on this site are intended for adult smokers. You must be of legal
+      smoking age in your province or territory to purchase products. Please consult your physician before use. E-Juice
+      on our site may contain Propylene Glycol and/or Vegetable Glycerin, Nicotine and Flavorings. Our products may be
+      poisonous if orally ingested. Products sold by FEED Vapor are not smoking cessation products and are not intended
+      to treat, prevent or cure any disease or condition. For their protection, please keep out of reach of children and
+      pets. Read our terms and conditions page before purchasing our products. Use All Products On This Site At Your Own
+      Risk!
+    </p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CustomFooter",
+  "settings": [],
+  "presets":[
+    {
+      "name": "CustomFooter"
+    }
+  ]
+}
+{% endschema %}

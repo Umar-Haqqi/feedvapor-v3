@@ -1,0 +1,778 @@
+<div class="banner-div">
+  <img
+    class="banner-div-img"
+    src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/slider-image-1.png?v=1710434056"
+    alt="Collection-page-banner-img"
+    width="auto"
+    height="auto"
+  >
+  <img
+    class="banner-div-text"
+    src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/banner-image-for-coll.svg?v=1711499995"
+    alt="Collection-page-banner-img"
+    width="auto"
+    height="auto"
+  >
+</div>
+
+<section id="product_collection_list" class="product-collection-list">
+  <div class="product-coll-tabs">
+    {% for collection in collections %}
+      {% assign title_parts = collection.title | split: ' ' %}
+      {% if title_parts.size > 1 %}
+        {% assign modified_title = title_parts | slice: 1, title_parts.size %}
+        {% assign display_title = modified_title | join: ' ' %}
+      {% else %}
+        {% assign display_title = collection.title %}
+      {% endif %}
+      <button id="{{ collection.handle }}" class="product-coll-tab-btn" data-collection="{{ collection.handle }}">
+        {{ display_title }}
+      </button>
+    {% endfor %}
+  </div>
+
+  <div class="toast" id="toast">
+    <div class="toast-header">
+      <i class="ri-check-line"></i>
+      <p>Added To cart</p>
+    </div>
+  </div>
+
+  {% for collection in collections %}
+    <div
+      id="product-collection-grid-container-{{ collection.handle }}"
+      class="product-collection-grid-container"
+      style="display:none"
+    >
+      {%- for product in collection.products -%}
+        {% assign is_out_of_stock = true %}
+        {% for variant in product.variants %}
+          {% if variant.available %}
+            {% assign is_out_of_stock = false %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        {% render 'custom-card-product',
+          product_id: product.id,
+          variant_id: product.variants.first.id,
+          is_out_of_stock: is_out_of_stock,
+          product_url: product.url,
+          product_image: product.featured_image,
+          product_title: product.title,
+          product_price: product.price,
+          product_background_color: product.metafields.custom.background_colour,
+          line_break: product.metafields.custom.line_break
+        %}
+      {%- endfor -%}
+    </div>
+  {% endfor %}
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    //------------------- custom-card-product-increment-decrement ------------------------//
+    let incrementButtons = document.querySelectorAll('.inc-btn');
+    let decrementButtons = document.querySelectorAll('.dec-btn');
+    let addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+    incrementButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+          console.log('clicked')
+          let productId = this.id.replace('increment-', '');
+          let quantityDisplay = document.querySelector(`#quantityDisplay-${productId}`);
+          let currentQuantity = parseInt(quantityDisplay.innerText);
+          quantityDisplay.innerText = currentQuantity + 1;
+      });
+    });
+
+    decrementButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+          let productId = this.id.replace('decrement-', '');
+          let quantityDisplay = document.querySelector(`#quantityDisplay-${productId}`);
+          let currentQuantity = parseInt(quantityDisplay.innerText);
+          if (currentQuantity > 1) {
+              quantityDisplay.innerText = currentQuantity - 1;
+          }
+      });
+    });
+    //------------------- custom-card-product-increment-decrement ------------------------//
+
+    //------------------- Add to Cart Functionality --------------------------------------//
+    
+    addToCartButtons.forEach(function(addToCartButton) {
+      addToCartButton.addEventListener('click', function(){
+        let productId = this.id.replace('add-to-cart-btn-','');
+        let quantityDisplay = document.querySelector(`#quantityDisplay-${productId}`);
+        let currentQuantity = parseInt(quantityDisplay.innerText);
+
+        let data = {
+           'items': [{
+              'id': parseInt(productId),
+              'quantity': currentQuantity
+            }]
+        };
+        
+        fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Item added:', data);
+            // Update the cart UI here
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+      })
+    });
+    
+  const showToastBtn = document.querySelectorAll(".add-to-cart-btnnn");
+  const toast = document.querySelector('#toast');
+  
+  showToastBtn.forEach((btn) => {
+    btn.addEventListener('click', function() {
+      console.log("show toast");
+      toast.classList.add('toast-active');
+      // btn.textContent = "Added to Cart";
+      btn.innerHTML = `
+        {%- render 'loading-spinner' -%}
+      `;
+      
+      setTimeout(function() {
+        btn.innerHTML="Add to Cart";
+        toast.classList.remove('toast-active');
+      }, 3000);
+
+    });
+  });
+
+
+    //------------------- Add to Cart Functionality --------------------------------------//
+  
+    let buttons = document.querySelectorAll('.product-coll-tab-btn');
+  
+    let pathSegments = window.location.pathname.split('/');
+    let collectionName = pathSegments[pathSegments.length - 1]; // gets the last segment of the URL, which basically tells what collection are we on
+    console.log(collectionName)
+  
+    let selectedButton = document.querySelector(`#${collectionName}`)
+    let selectedCollectionDiv = document.getElementById(`product-collection-grid-container-${collectionName}`); 
+
+    console.log(selectedButton)
+    console.log(selectedCollectionDiv)
+  
+    if(selectedButton && selectedCollectionDiv) {
+      selectedButton.classList.add('active-tab-btn');
+      selectedCollectionDiv.style.display = 'grid';
+    } else {
+      buttons[0].classList.add('active-tab-btn')
+      document.querySelector('.product-collection-grid-container').style.display = 'grid'
+      
+    } 
+    
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Remove 'active-tab-btn' class from all buttons
+            buttons.forEach(btn => btn.classList.remove('active-tab-btn'));
+            document.querySelectorAll('.product-collection-grid-container').forEach(div => {
+              div.style.display = 'none';
+            });
+
+            // Add 'active-tab-btn' class to the clicked button and apply style grid to that collection
+            this.classList.add('active-tab-btn');
+            document.getElementById(`product-collection-grid-container-${this.id}`).style.display = 'grid';
+        });
+    });
+});
+</script>
+
+{% schema %}
+{
+  "name": "CustomPoductCollScreen",
+  "settings": [],
+  "presets":[
+    {
+      "name": "CustomPoductCollScreen"
+    }
+  ]
+}
+{% endschema %}
+
+{% comment %}
+  <section id="product_collection_list" class="product-collection-list">
+    <div class="product-coll-tabs">
+      {% for collection in collections %}
+        <button id="{{ collection.handle }}" class="product-coll-tab-btn">{{ collection.title }}</button>
+      {% endfor %}
+    </div>
+
+    <div id="product-collection-grid-container" class="product-collection-grid-container">
+      <!-- dynamic content here -->
+    </div>
+
+    <!-- <div id="pod-collection-grid-container" class="product-collection-grid-container">
+
+    </div>
+    <div id="starterKit-collection-grid-container" class="product-collection-grid-container">
+
+    </div>
+    <div id="batteries-collection-grid-container" class="product-collection-grid-container">
+
+    </div> -->
+  </section>
+
+  <style>
+       .product-collection-list {
+        width: 100%;
+        height: auto;
+        background: #000;
+        color: #fff;
+        padding: 3% 5%;
+    }
+
+    .product-coll-tabs {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        margin-bottom: 3rem;
+    }
+
+    .product-coll-tab-btn {
+        background: #000;
+        color: #fff;
+        font: 0.6rem;
+        padding: 0.4rem 0.8rem;
+        border: 1px solid #fff;
+        border-radius: 20px;
+        cursor: pointer;
+        font-family: "Helvetica", Arial, sans-serif;
+    }
+
+    .active-tab-btn {
+        background: #fff;
+        color: #000;
+        font-weight: bold;
+    }
+
+    .product-collection-grid-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 2rem;
+    }
+
+    .product-collection-card {
+        height: 420px;
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #252525;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 250px;
+        position: relative;
+    }
+
+    .product-image>img {
+        position: relative;
+        top: -10%;
+        left: 3%;
+        width: 100%;
+        height: 125%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .info-and-actions {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+        height: 170px;
+    }
+
+    .info-and-actions>.product-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .product-info>.product-name {
+        font-size: 1.7rem;
+        font-family: "ArupalaGrotesk-reg";
+        font-weight: 600;
+        line-height: 20px;
+        text-transform: uppercase;
+    }
+
+    .product-info>.product-price {
+        font-size: 1.2rem;
+        font-family: "ArupalaGrotesk-reg";
+        font-weight: 600;
+    }
+
+    .inc-dec {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .inc-dec>.qty {
+        color: #fff;
+        text-align: center;
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        line-height: 2rem;
+        font-family: "Helvetica", Arial, sans-serif;
+    }
+
+
+    .inc-dec>.inc-dec-btn {
+        background: #fff;
+        color: #000;
+        text-align: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        cursor: pointer;
+        border: none;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        line-height: 2rem;
+        font-weight: 600;
+        font-family: "Helvetica", Arial, sans-serif;
+    }
+
+    .product-actions .add-to-cart-btn {
+        background: transparent;
+        padding: 0.5rem;
+        color: #fff;
+        border: 1px solid #fff;
+        border-radius: 20px;
+        width: 100%;
+        cursor: pointer;
+        font-family: "Helvetica", Arial, sans-serif;
+    }
+
+    @media only screen and (max-width: 435px) {
+        .product-collection-grid-container {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1rem;
+        }
+
+        .product-collection-card {
+            height: 450px;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #252525;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: #B73738;
+            position: relative;
+            overflow: hidden;
+        }
+    }
+  </style>
+
+  <script>
+  // const pods = [
+  //   {
+  //     podName: "Brisky Classic Red",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#B73738",
+  //     lineBreak: 1,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Brisky_Classic_Red_01.png?v=1710099416",
+  //   },
+  //   {
+  //     podName: "Baddie Blueberries",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#004EFF",
+  //     lineBreak: 1,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Baddie_Blueberries_01.png?v=1710166191",
+  //   },
+  //   {
+  //     podName: "Groovy Grape",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#603BA2",
+  //     lineBreak: 1,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Groovy_Grape_01.png?v=1710166230",
+  //   },
+  //   {
+  //     podName: "Frosted Strawberry",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#F29B9A",
+  //     lineBreak: 1,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Frosted_Strawberries_01_8b89d21c-90c9-493b-9932-6d871510c5c6.png?v=1710841741",
+  //   },
+  //   {
+  //     podName: "Apple Peach Strawww",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#FBA78E",
+  //     lineBreak: 1,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Apple_Peach_Strawww_01_f41ef432-1d61-4a09-b2d6-066019539ea6.png?v=1710841929",
+  //   },
+  //   {
+  //     podName: "Northern Blue Razz",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#3342B9",
+  //     lineBreak: 1,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Northern_Blue_Razz_01_cb305169-6a88-4660-9a0a-2b557a2cbeec.png?v=1710842097",
+  //   },
+  //   {
+  //     podName: "Water Melon Mango Tango",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#FFC205",
+  //     lineBreak: 2,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Watermelon_Mango_Tango_01_f71992da-7beb-442d-959f-9266e7a9e536.png?v=1710842264",
+  //   },
+  //   {
+  //     podName: "Kiwi Passion Fruit Guava",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#01E899",
+  //     lineBreak: 2,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEEDPod_KiwiPassionfruitGuava_01.png?v=1710842576",
+  //   },
+  //   {
+  //     podName: "BERRY IN THE 61x",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#9B3243",
+  //     lineBreak: 1,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Berries_in_the_6ix_01_cce78751-1386-4a34-b67d-dbf8d825ff12.png?v=1710842799",
+  //   },
+  //   {
+  //     podName: "Poppin' Strawkiwi",
+  //     podPrice: 123.0,
+  //     backgroundClr: "#EC8D9C",
+  //     lineBreak: 1,
+  //     podImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_Pod_Poppin_StrawKiwi_01_5d51931c-100c-457c-b860-0d566b08cde2.png?v=1710843136",
+  //   },
+  // ];
+  // const starterkit = [
+  //   {
+  //     starterkitName: "Starter Kit",
+  //     starterkitPrice: 500.0,
+  //     starterkitbackgroundClr: "#603BA2",
+  //     lineBreak: 1,
+  //     starterkitImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/n__2x_e13e30c4-dec8-4334-96ab-cf3355685230.png?v=1709837520",
+  //   },
+  // ];
+  // const batteries = [
+  //   {
+  //     batteriesName: "Feed Battery",
+  //     batteriesPrice: 200.0,
+  //     batteriesbackgroundClr: "#434343",
+  //     lineBreak: 1,
+  //     batteriesImage:
+  //       "https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEED_pod_system_01.png?v=1710099332",
+  //   },
+  // ];
+
+  let allProducts = {
+      {% for collection in collections %}
+        "{{ collection.handle }}": [
+          {% for product in collection.products %}
+            {
+              "name": "{{ product.title | escape }}",
+              "image": "{{ product.featured_image | img_url: '300x300' }}",
+              "price": "{{ product.price | money_without_currency }}",
+              "backgroundClr": "{{ product.metafields.custom.background_colour }}", // You need to define how to set this
+              "lineBreak": 1 // You need to define how to set this
+            },
+          {% endfor %}
+        ],
+      {% endfor %}
+    };
+
+    console.log(allProducts)
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+      let buttons = document.querySelectorAll('.product-coll-tab-btn');
+
+      if (buttons.length > 0) {
+          buttons[0].classList.add('active-tab-btn');
+      }
+
+      buttons.forEach(function(button) {
+          button.addEventListener('click', function() {
+              // Remove 'active-tab-btn' class from all buttons
+              buttons.forEach(btn => btn.classList.remove('active-tab-btn'));
+
+              // Add 'active-tab-btn' class to the clicked button
+              this.classList.add('active-tab-btn');
+              console.log(this.id)
+              renderProducts(allProducts[this.id])
+
+          });
+      });
+  });
+
+  // tab buttons
+  // const pod_tab_Btn = document.querySelector("#pod_tab_Btn");
+  // const starterkit_tab_Btn = document.querySelector("#starterkit_tab_Btn");
+  // const batteries_tab_Btn = document.querySelector("#batteries_tab_Btn");
+
+  // Collection grid containers
+  const productCollectionGridContainer = document.querySelector(
+    "#product-collection-grid-container"
+  );
+
+
+  // const podCollectionGridContainer = document.querySelector(
+  //   "#pod-collection-grid-container"
+  // );
+  // const starterKitCollectionGridContainer = document.querySelector(
+  //   "#starterKit-collection-grid-container"
+  // );
+  // const batteriesCollectionGridContainer = document.querySelector(
+  //   "#batteries-collection-grid-container"
+  // );
+
+  // Default to displaying pods
+  // pod_tab_Btn.classList.add("active-tab-btn");
+  // starterkit_tab_Btn.classList.remove("active-tab-btn");
+  // batteries_tab_Btn.classList.remove("active-tab-btn");
+  // renderPods();
+
+  // tab Event listeners
+  // pod_tab_Btn.addEventListener("click", () => {
+  //   pod_tab_Btn.classList.add("active-tab-btn");
+  //   starterkit_tab_Btn.classList.remove("active-tab-btn");
+  //   batteries_tab_Btn.classList.remove("active-tab-btn");
+
+  //   podCollectionGridContainer.style.display = "grid";
+  //   starterKitCollectionGridContainer.style.display = "none";
+  //   batteriesCollectionGridContainer.style.display = "none";
+
+  //   // Render pods when pod tab is clicked
+  //   renderPods();
+
+  //   // Hide starter kits and batteries
+  //   starterKitCollectionGridContainer.innerHTML = "";
+  //   batteriesCollectionGridContainer.innerHTML = "";
+  // });
+
+  // starterkit_tab_Btn.addEventListener("click", () => {
+  //   starterkit_tab_Btn.classList.add("active-tab-btn");
+  //   pod_tab_Btn.classList.remove("active-tab-btn");
+  //   batteries_tab_Btn.classList.remove("active-tab-btn");
+
+  //   podCollectionGridContainer.style.display = "none";
+  //   starterKitCollectionGridContainer.style.display = "grid";
+  //   batteriesCollectionGridContainer.style.display = "none";
+
+  //   // Render starter kits when starter kit tab is clicked
+  //   renderStarterKits();
+
+  //   // Hide pods and batteries
+  //   podCollectionGridContainer.innerHTML = "";
+  //   batteriesCollectionGridContainer.innerHTML = "";
+  // });
+
+  // batteries_tab_Btn.addEventListener("click", () => {
+  //   batteries_tab_Btn.classList.add("active-tab-btn");
+  //   pod_tab_Btn.classList.remove("active-tab-btn");
+  //   starterkit_tab_Btn.classList.remove("active-tab-btn");
+
+  //   podCollectionGridContainer.style.display = "none";
+  //   starterKitCollectionGridContainer.style.display = "none";
+  //   batteriesCollectionGridContainer.style.display = "grid";
+
+  //   // Render batteries when batteries tab is clicked
+  //   renderBatteries();
+
+  //   // Hide pods and starter kits
+  //   podCollectionGridContainer.innerHTML = "";
+  //   starterKitCollectionGridContainer.innerHTML = "";
+  // });
+
+  // Rendering products
+  function renderProducts(products) {
+    productCollectionGridContainer.innerHTML = "";
+
+    products.forEach((product) => {
+      const BR = product.lineBreak;
+      const splitHeading = product.name.split(" ");
+
+      if (BR > 0 && BR <= splitHeading.length) {
+        splitHeading.splice(BR, 0, "<br />");
+      }
+      const headingWithBr = splitHeading.join(" ");
+
+      productCollectionGridContainer.innerHTML += `
+          <div class="product-collection-card">
+              <div class="product-image" style="background-color: ${product.backgroundClr}">
+                  <img src="${product.image}" alt="">
+              </div>
+              <div class="info-and-actions">
+                  <div class="product-info">
+                      <p class="product-name">${headingWithBr}</p>
+                      <p class="product-price">$${product.price} CAD</p>
+                  </div>
+                  <div class="product-actions">
+                      <div class="inc-dec">
+                          <div class="dec-btn inc-dec-btn">-</div>
+                          <div class="qty">1</div>
+                          <div class="dec-btn inc-dec-btn">+</div>
+                      </div>
+                      <button class="add-to-cart-btn">Add to Cart</button>
+                  </div>
+              </div>
+          </div>
+      `;
+    });
+  }
+
+
+  // function renderPods() {
+  //   podCollectionGridContainer.innerHTML = "";
+
+  //   pods.forEach((pod) => {
+  //     const BR = pod.lineBreak;
+  //     const splitPodHeading = pod.podName.split(" ");
+
+  //     if (BR > 0 && BR <= splitPodHeading.length) {
+  //       splitPodHeading.splice(BR, 0, "<br />");
+  //     }
+  //     podHeadingwithBr = splitPodHeading.toString().replace(/,/g, " ");
+
+  //     podCollectionGridContainer.innerHTML += `
+  //         <div class="product-collection-card">
+  //             <div class="product-image" style=" background-color: ${pod.backgroundClr}">
+  //                 <img src="${pod.podImage}" alt="">
+  //             </div>
+  //             <div class="info-and-actions">
+  //                 <div class="product-info">
+  //                     <p class="product-name">${podHeadingwithBr}</p>
+  //                     <p class="product-price">$${pod.podPrice} CAD</p>
+  //                 </div>
+  //                 <div class="product-actions">
+  //                     <div class="inc-dec">
+  //                         <div class="dec-btn inc-dec-btn">-</div>
+  //                         <div class="qty">1</div>
+  //                         <div class="dec-btn inc-dec-btn">+</div>
+  //                     </div>
+  //                     <button class="add-to-cart-btn">Add to Cart</button>
+  //                 </div>
+  //             </div>
+  //         </div>
+  //     `;
+  //   });
+  // }
+
+  // function renderStarterKits() {
+  //   starterKitCollectionGridContainer.innerHTML = "";
+
+  //   starterkit.forEach((starterkit) => {
+  //     const BR = starterkit.lineBreak;
+  //     const splitPodHeading = starterkit.starterkitName.split(" ");
+
+  //     if (BR > 0 && BR <= splitPodHeading.length) {
+  //       splitPodHeading.splice(BR, 0, "<br />");
+  //     }
+  //     starterHeadingwithBr = splitPodHeading.toString().replace(/,/g, " ");
+
+  //     starterKitCollectionGridContainer.innerHTML += `
+  //         <div class="product-collection-card">
+  //             <div class="product-image" style=" background-color: ${starterkit.starterkitbackgroundClr}">
+  //                 <img src="${starterkit.starterkitImage}" alt="">
+  //             </div>
+  //             <div class="info-and-actions">
+  //                 <div class="product-info">
+  //                     <p class="product-name">${starterHeadingwithBr}</p>
+  //                     <p class="product-price">$${starterkit.starterkitPrice} CAD</p>
+  //                 </div>
+  //                 <div class="product-actions">
+  //                     <div class="inc-dec">
+  //                         <div class="dec-btn inc-dec-btn">-</div>
+  //                         <div class="qty">1</div>
+  //                         <div class="dec-btn inc-dec-btn">+</div>
+  //                     </div>
+  //                     <button class="add-to-cart-btn">Add to Cart</button>
+  //                 </div>
+  //             </div>
+  //         </div>
+  //     `;
+  //   });
+  // }
+
+  // function renderBatteries() {
+  //   batteriesCollectionGridContainer.innerHTML = "";
+
+  //   batteries.forEach((batteries) => {
+  //     const BR = batteries.lineBreak;
+  //     const splitPodHeading = batteries.batteriesName.split(" ");
+
+  //     if (BR > 0 && BR <= splitPodHeading.length) {
+  //       splitPodHeading.splice(BR, 0, "<br />");
+  //     }
+  //     batteriesHeadingwithBr = splitPodHeading.toString().replace(/,/g, " ");
+
+  //     batteriesCollectionGridContainer.innerHTML += `
+  //         <div class="product-collection-card">
+  //             <div class="product-image" style=" background-color: ${batteries.batteriesbackgroundClr}">
+  //                 <img src="${batteries.batteriesImage}" alt="">
+  //             </div>
+  //             <div class="info-and-actions">
+  //                 <div class="product-info">
+  //                     <p class="product-name">${batteriesHeadingwithBr}</p>
+  //                     <p class="product-price">$${batteries.batteriesPrice} CAD</p>
+  //                 </div>
+  //                 <div class="product-actions">
+  //                     <div class="inc-dec">
+  //                         <div class="dec-btn inc-dec-btn">-</div>
+  //                         <div class="qty">1</div>
+  //                         <div class="dec-btn inc-dec-btn">+</div>
+  //                     </div>
+  //                     <button class="add-to-cart-btn">Add to Cart</button>
+  //                 </div>
+  //             </div>
+  //         </div>
+  //     `;
+  //   });
+  // }
+  </script>
+
+  {% schema %}
+  {
+    "name": "CustomPoductCollScreen",
+    "settings": [],
+    "presets":[
+      {
+        "name": "CustomPoductCollScreen"
+      }
+    ]
+  }
+  {% endschema %}
+{% endcomment %}

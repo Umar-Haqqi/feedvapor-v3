@@ -1,0 +1,280 @@
+<div class="age-verification-section">
+  <div class="container">
+    <div class="logo">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/White_Logo-01_wex_6e9c1644-4631-41f9-9b7c-ed81b92645e2.png?v=1708944924"
+        alt="feedlogo"
+        width="auto"
+        height="auto"
+      >
+    </div>
+
+    <div class="age-verification-body">
+      <h2>
+        PLEASE VERIFY<br>
+        YOUR AGE
+      </h2>
+      <p class="info">
+        Products on this website may contain nicotine are
+        only suitable for those who are 21 years or older
+      </p>
+      <div class="containerProvince">
+        <p class="province">Flavoured products banned in Quebec and Nova Scotia.</p>
+        <h2 class="h2Province">Province:</h2>
+        <select class="selectProvince" id="provinceSelect">
+          <option value="" selected disabled>Select Province</option>
+          <option value="AB">Alberta</option>
+          <option value="BC">British Columbia</option>
+          <option value="MB">Manitoba</option>
+          <option value="NB">New Brunswick</option>
+          <option value="NL">Newfoundland and Labrador</option>
+          <option value="NS">Nova Scotia</option>
+          <option value="NT">Northwest Territories</option>
+          <option value="NU">Nunavut</option>
+          <option value="ON">Ontario</option>
+          <option value="PE">Prince Edward Island</option>
+          <option value="QC">Quebec</option>
+          <option value="SK">Saskatchewan</option>
+          <option value="YT">Yukon</option>
+        </select>
+        <!-- <div id="selectedProvince"></div> -->
+      </div>
+      <p class="age-question">Are you 21 or older?</p>
+      <div class="age-verification-btns">
+        <button id="yess" class="over-age" disabled>Yes, I am over 21</button>
+        <button id="noo" class="under-age" disabled>No, I am under 21</button>
+      </div>
+      <span id="showMessage" class="message">You must be at least 21 years of age</span>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      function setCookie(cookieName, cookieValue, cookieExp) {
+        var today = new Date();
+        var expire = new Date();
+        expire.setTime(today.getTime() + 3600000 * 24 * cookieExp);
+        document.cookie = cookieName + "=" + encodeURI(cookieValue) + ";expires=" + expire.toGMTString() + ";path=/";
+      }
+
+    const selectElement = document.getElementById('provinceSelect');
+    const overAgeButton = document.getElementById("yess");
+    const underAgeButton = document.getElementById("noo");
+    let message = document.querySelector("#showMessage");
+
+
+    // Disable buttons initially
+    overAgeButton.disabled = true;
+    underAgeButton.disabled = true;
+
+  selectElement.addEventListener('change', function () {
+    console.log("Change event triggered");
+
+    var selectedProvince = this.value;
+    console.log(selectedProvince, "selectedProvince here");
+    message.classList.remove("show");
+
+    if (selectedProvince === "QC" || selectedProvince === "NS") {
+      console.log("QC selected, alert will show");
+      // alert('not allowed');
+      overAgeButton.disabled = true;
+      underAgeButton.disabled = true;
+      message.classList.add("show");
+      message.innerHTML = "Flavoured products are not available for sale in Quebec or Nova Scotia.";
+      return;
+    } else {
+      console.log("Province other than QC selected");
+      localStorage.setItem('userProvince', selectedProvince);
+      console.log("Province stored in localStorage::::", localStorage.getItem('userProvince'));
+
+      overAgeButton.disabled = false;
+      underAgeButton.disabled = false;
+    }
+  });
+
+          overAgeButton.addEventListener("click", function() {
+          document.body.classList.add("overflow_auto");
+
+
+          document.querySelector(".age-verification-section").style.display = "none";
+
+          // Set cookie to expire in 3 or 4 days
+            var now = new Date();
+            var expireDate = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000)); // Adjust to 4 days if needed
+            document.cookie = "ageVerified=true; expires=" + expireDate.toUTCString() + "; path=/";
+            setCookie('visitor', 'remembered', 30)
+        });
+
+  underAgeButton.addEventListener("click", function() {
+        message.classList.add("show");
+        message.innerHTML = "You must be at least 21 years of age";
+
+        setTimeout(function() {
+          message.classList.remove("show");
+        }, 4000);
+      });
+  });
+</script>
+
+<style>
+  body{
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .message {
+    display: none;
+    font-size: 14px;
+    padding: 14px 14px;
+    background: #ff0000c2;
+    color: #fff;
+    border-radius: 10px;
+    font-family:HelveticaNeue_Medium;
+    position: absolute;
+    top: 21px;
+    right: 21px;
+    left: 21px;
+    z-index: 1000;
+  }
+  .show {
+    display: block;
+    animation: popUpAndDown 3s ease-in-out;
+  }
+
+  @keyframes popUpAndDown {
+    0%, 100% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    10%, 90% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  .age-verification-section{
+    position: relative;
+    z-index: 999999999;
+    background: #000;
+    color: #fff;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    overflow-y:hidden;
+
+  }
+  .age-verification-section>.container{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+    gap: 2rem;
+    padding: 20px;
+  }
+  .age-verification-section>.container>.logo{
+    width: 150px;
+    height: 150px;
+  }
+  .age-verification-section>.container>.logo>img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+  .age-verification-body>h2{
+    font-size: 3.2rem;
+    font-family: "ArupalaGrotesk-SuperBold";
+    text-align: center;
+    line-height: 3.2rem;
+    margin-bottom: 2rem;
+    white-space: nowrap;
+  }
+  .age-verification-body>.info{
+    font-size: 16px;
+    font-family: 'HelveticaNeue_Medium';
+    text-align: center;
+    line-height: 18px;
+    margin-bottom: 1rem;
+  }
+  .age-verification-body>.age-question {
+    font-size: 1.2rem;
+    font-family: HelveticaNeue_Bold;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .age-verification-btns{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.4rem;
+    margin-bottom: 25px;
+  }
+  .age-verification-btns > button{
+    padding: 0.8rem;
+    width: 90%;
+    background: #000;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-family: "HelveticaNeue_Bold";
+    cursor: pointer;
+  }
+  .age-verification-btns > button:hover:enabled {
+    background: #191B20;
+    color: #fff;
+    border: 2px solid #fff;
+  }
+  .age-verification-btns > button:disabled {
+    background: #ccc;
+    color: #666;
+    /* border: 2px solid #999; */
+    cursor: not-allowed;
+  }
+  .age-verification-btns>.over-age{
+    background: #fff;
+    color: #000;
+  }
+  .containerProvince .province {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .age-verification-section>.container{
+      justify-content: flex-start;
+      padding: 20px 0;
+    }
+    .age-verification-section>.container>.logo{
+      width: auto;
+      height: 70px;
+      margin-top: 20px;
+    }
+    .h2Province{
+      margin-top: 10px;
+    }
+    .age-verification-body>h2{
+      font-size: 20px;
+      line-height: 20px;
+      margin-bottom: 15px;
+    }
+  }
+
+
+</style>
+
+{% schema %}
+{
+  "name": "ageVerificationScreen",
+  "settings": [],
+  "presets":[
+    {
+      "name": "ageVerificationScreen"
+    }
+  ]
+}
+{% endschema %}

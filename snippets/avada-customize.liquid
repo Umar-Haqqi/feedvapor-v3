@@ -1,0 +1,16 @@
+{% comment %} William - Joy - 12/2/26 {% endcomment %}
+
+<script>
+document.addEventListener('click', function (e) {
+    const rewardLink = e.target.closest('a[href*="/pages/reward-programs"]');
+
+    if (!rewardLink) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (window.joyInstance && typeof joyInstance.openWidget === 'function') {
+        joyInstance.openWidget();
+    }
+});
+</script>

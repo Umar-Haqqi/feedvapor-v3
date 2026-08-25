@@ -1,0 +1,66 @@
+<section id="feed_tinker_text_Left_to_Right">
+  <div class="slide-container-feed-LTR">
+    <div class="slide-content-feed-LTR">
+      <!-- JavaScript will append elements here -->
+    </div>
+  </div>
+</section>
+
+<script>
+      document.addEventListener('DOMContentLoaded', function() {
+      const slideContentReferal = document.querySelector('.slide-content-feed-LTR');
+      const animationDirection = '{{ settings.animation_direction }}'; // Retrieve user input value
+  
+      for (let i = 0; i < 100; i++) {
+        const slideItem = document.createElement('div');
+        slideItem.classList.add('slide-item-feed-LTR');
+  
+        const referalText = document.createElement('div');
+        referalText.classList.add('feed-text');
+        referalText.innerHTML = `
+          <div class="feed-innerText">
+            <img class="feed-tinker-logo" src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/logo-without-text-resize.png?v=1708945456"/>
+            <p class="feed-tinker-text">FEED</p>
+          </div>
+          `;
+  
+        slideItem.appendChild(referalText);
+        slideContentReferal.appendChild(slideItem);
+      }
+  
+      // Conditionally apply class based on user's choice
+      if (animationDirection === 'left_to_right') {
+        slideContentReferal.classList.add('slide-content-feed-LTR');
+      } else if (animationDirection === 'right_to_left') {
+        slideContentReferal.classList.add('slide-content-referal-RTL');
+      }
+    });
+</script>
+
+{% schema %}
+{
+  "name": "TinkerTextFeedLeftToRight",
+  "settings": [
+    {
+      "type": "select",
+      "id": "animation_direction",
+      "label": "Animation Direction",
+      "options": [
+        {
+          "value": "left_to_right",
+          "label": "Left to Right"
+        },
+        {
+          "value": "right_to_left",
+          "label": "Right to Left"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TinkerTextFeedLeftToRight"
+    }
+  ]
+}
+{% endschema %}

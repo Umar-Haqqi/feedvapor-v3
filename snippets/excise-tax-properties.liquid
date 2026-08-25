@@ -1,0 +1,46 @@
+{%- comment -%}
+  Renders hidden line-item properties so cart.js can reconcile excise tax from
+  COLLECTION METAFIELDS instead of hardcoded variant IDs. Include this inside
+  every add-to-cart <form 'product'>.
+
+  Accepts:
+    product - the product being added to cart (required)
+
+  Collection metafields (product-reference, one hidden tax product each):
+    custom.excise_federal_id      -> federal excise tax product (single variant)
+    custom.excise_provincial_id   -> provincial excise tax product (single variant)
+
+  A product's "tax collection" is the first of its collections that has
+  custom.excise_federal_id set. Federal always applies; cart.js gates provincial
+  on the shopper's province (see PROVINCIAL_TAX_PROVINCES in cart.js).
+
+  Product metafield (bundles):
+    custom.bundle_pack_size    -> integer; cart.js multiplies excise qty by this.
+
+  To launch a new taxable collection: create the federal (+ provincial) hidden
+  tax product, then point the collection's custom.excise_federal_id /
+  custom.excise_provincial_id metafields at them. No code change needed.
+{%- endcomment -%}
+{%- liquid
+  assign tax_collection = null
+  for coll in product.collections
+    if coll.metafields.custom.excise_federal_id != blank
+      assign tax_collection = coll
+      break
+    endif
+  endfor
+-%}
+{%- if tax_collection != blank -%}
+  {%- assign fed_product = tax_collection.metafields.custom.excise_federal_id.value -%}
+  {%- assign prov_product = tax_collection.metafields.custom.excise_provincial_id.value -%}
+  {%- if fed_product != blank -%}
+    <input type="hidden" name="properties[_excise_federal_id]" value="{{ fed_product.variants.first.id }}">
+  {%- endif -%}
+  {%- if prov_product != blank -%}
+    <input type="hidden" name="properties[_excise_provincial_id]" value="{{ prov_product.variants.first.id }}">
+  {%- endif -%}
+  <input type="hidden" name="properties[_excise_group]" value="{{ tax_collection.handle }}">
+{%- endif -%}
+{%- if product.metafields.custom.bundle_pack_size.value != blank -%}
+  <input type="hidden" name="properties[_bundle_pack_size]" value="{{ product.metafields.custom.bundle_pack_size.value }}">
+{%- endif -%}

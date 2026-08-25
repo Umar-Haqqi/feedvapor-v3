@@ -1,0 +1,55 @@
+{%- comment -%}
+  Bundle flavour selector. Renders one flavour dropdown per pack unit so the
+  shopper picks each flavour in a multi-pack. Selections are submitted as
+  VISIBLE line-item properties (Flavour 1, Flavour 2, ...) for fulfillment.
+
+  Must be rendered INSIDE the <form 'product'> so the selects submit natively
+  via FormData. Excise tax quantity is driven by _bundle_pack_size (injected by
+  excise-tax-properties.liquid) which cart.js multiplies into the excise qty.
+
+  Accepts:
+    product - the (bundle) product
+    section - to build unique select ids
+
+  Product metafields:
+    custom.bundle_pack_size          -> integer, number of flavour slots
+    custom.bundle_collection_handle  -> handle of collection supplying flavours
+{%- endcomment -%}
+{%- assign bundle_pack_size = product.metafields.custom.bundle_pack_size.value -%}
+{%- assign bundle_collection_handle = product.metafields.custom.bundle_collection_handle -%}
+{%- if bundle_pack_size != blank and bundle_collection_handle != blank -%}
+  {%- assign bundle_collection = collections[bundle_collection_handle] -%}
+  {%- if bundle_collection != blank -%}
+    <div class="bundle-flavour-selector" data-pack-size="{{ bundle_pack_size }}">
+      {%- for i in (1..bundle_pack_size) -%}
+        <div class="bundle-flavour-field">
+          <label class="bundle-flavour-label form__label" for="BundleFlavour-{{ i }}-{{ section.id }}">
+            {{ i }}{% if i == 1 %}st{% elsif i == 2 %}nd{% elsif i == 3 %}rd{% else %}th{% endif %} Flavour
+          </label>
+          <select
+            class="bundle-flavour-dropdown"
+            name="properties[Flavour {{ i }}]"
+            id="BundleFlavour-{{ i }}-{{ section.id }}"
+            data-flavour-index="{{ i }}"
+            required
+          >
+            <option value="">Please select an option</option>
+            {%- for item in bundle_collection.products -%}
+              {%- unless item.tags contains 'excise-tax' -%}
+                <option value="{{ item.title | escape }}">{{ item.title }}</option>
+              {%- endunless -%}
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endfor -%}
+    </div>
+    <style>
+      .bundle-flavour-selector { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+      .bundle-flavour-field { display: flex; flex-direction: column; gap: 0.4rem; }
+      .bundle-flavour-label { margin: 0; }
+      .bundle-flavour-dropdown { padding: 0.8rem 1rem; border: 0.1rem solid rgba(var(--color-foreground), 0.2); border-radius: var(--inputs-radius, 0.4rem); background: rgb(var(--color-background)); color: rgb(var(--color-foreground)); font-size: 1.4rem; }
+      .bundle-flavour-dropdown:focus { outline: none; border-color: rgba(var(--color-foreground), 0.55); }
+      .bundle-flavour-dropdown.is-invalid { border-color: #d02e2e; box-shadow: 0 0 0 0.1rem #d02e2e; }
+    </style>
+  {%- endif -%}
+{%- endif -%}

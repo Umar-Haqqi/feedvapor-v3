@@ -1,0 +1,329 @@
+<div class="swiper mySwiper">
+  <div class="swiper-wrapper">
+    <!-- start - new banner feed sync -->
+     
+    <div class="swiper-slide new-banner-destkop">
+      <a href="{{ shop.url }}/collections/feed-sync-25k-disposable-vape">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0625/2140/9636/files/new_flavor.png?v=1725057801"
+          alt="slider banner desktop 1"
+          width="auto"
+          height="auto"
+        >
+      </a>
+    </div>
+    
+    
+<div class="swiper-slide new-banner-mob">
+      <a href="{{ shop.url }}/collections/pods-30k">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0625/2140/9636/files/B2C_Mobile_1.png?v=1748123537"
+          alt="slider banner mob 2"
+          width="auto"
+          height="auto"
+        >
+      </a>
+    </div>
+    <!-- <div class="swiper-slide new-banner-mob">
+      <a href="{{ shop.url }}/collections/feed-sync-25k-disposable-vape">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0625/2140/9636/files/Mob_4.png?v=1726522821"
+          alt="slider banner mob 1"
+          width="auto"
+          height="auto"
+        >
+      </a>
+    </div> -->
+    
+  </div>
+
+  <div class="swiper-pagination"></div>
+</div>
+
+<!--
+  <div class="new-year-popup-wrapper">
+    <div class="new-year-popup-div">
+      <div>
+        <h2 class="new-year-popup-heading">NEW YEAR SALE</h2>
+        <p class="new-year-popup-text">Buy 3 Get 1 Free</p>
+      </div>
+      <a class="new-year-popup-redirect-popup" href="{{ shop.url }}/pages/feed-vapes-new-year-sale-2025"> Click Here </a>
+      <button class="new-year-popup-close-popup"><i class="ri-close-circle-line"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const popupWrapper = document.querySelector(".new-year-popup-wrapper");
+    const closePopupBtn = document.querySelector(".new-year-popup-close-popup");
+    const body = document.querySelector('body');
+
+    function disableScroll() {
+      body.style.overflowY = 'hidden !important';
+    }
+    function enableScroll() {
+      body.style.overflowY = 'auto !important';
+    }
+
+    closePopupBtn.addEventListener("click", function() {
+        if (popupWrapper) {
+            popupWrapper.style.display = "none";
+
+            enableScroll();
+        }
+    });
+
+    if (popupWrapper && popupWrapper.style.display !== "none") {
+      disableScroll();
+    }
+  </script>
+-->
+
+{% style %}
+  body{
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+  }
+  .new-year-popup-wrapper{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000000;
+    background: #000000b5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .new-year-popup-div{
+    position: relative;
+    width: 50%;
+    height: auto;
+    /* background-color: #000; */
+    background-color: #111;
+    padding: 70px 0;
+    padding-bottom: 70px;
+    padding-bottom: 50px;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+  }
+  .new-year-popup-heading{
+    color: #fff;
+    font-size: 34px;
+    font-family: "ArupalaGrotesk-SuperBold";
+    text-transform: uppercase;
+  }
+
+  .new-year-popup-text{
+    color: #fff;
+    font-size: 23px;
+    font-weight: 700px;
+    text-transform: uppercase;
+  }
+
+  .new-year-popup-redirect-popup{
+    text-decoration: none;
+    width: 50%;
+    display: block;
+    background: #fff;
+    border-radius: 20px;
+    padding: 10px;
+    color: #000;
+    border: 1px solid #000;
+  }
+  .new-year-popup-redirect-popup:hover{
+    background: #111;
+    color: #fff;
+    border: 1px solid #fff;
+  }
+  .new-year-popup-close-popup i{
+    font-size: 23px;
+  }
+  .new-year-popup-close-popup{
+    background: transparent;
+    color: #fff;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: none;
+  }
+
+  @media (max-width: 768px) {
+    .new-year-popup-div{
+      width: 80%;
+      padding-top: 60px;
+      padding-bottom: 30px;
+    }
+    .new-year-popup-heading {
+      font-size: 28px;
+    }
+    .new-year-popup-text{
+      font-size: 20px;
+      font-weight: 600px;
+    }
+    .new-year-popup-redirect-popup {
+      width: 80%;
+    }
+  }
+  @media (max-width: 450px) {
+    .new-year-popup-div{
+      width: 90%;
+      padding-top: 50px;
+      padding-bottom: 20px;
+    }
+    .new-year-popup-heading {
+      font-size: 23px;
+    }
+    .new-year-popup-text{
+      font-size: 16px;
+    }
+    .new-year-popup-redirect-popup {
+      width: 90%;
+    }
+  }
+{% endstyle %}
+
+<style>
+  .swiper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background: #000;
+
+  }
+
+  .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      object-fit: contain;
+  }
+
+  /* default styling end here*/
+
+
+  .new-banner-mob {
+      display: none;
+  }
+
+  @media only screen and (max-width: 850px) {
+      .new-banner-mob {
+          display: block;
+      }
+
+      .new-banner-destkop {
+          display: none;
+      }
+  }
+
+  .swiper-wrapper {
+      position: relative;
+  }
+
+  .slider-text-lg {
+      /* display:none; */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+  }
+
+  .slider-text-sm {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+  }
+
+  @media only screen and (max-width: 450px) {
+      .slider-text-lg {
+          display: none;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 1;
+      }
+
+      .slider-text-sm {
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 1;
+      }
+  }
+
+  .swiper-pagination-bullet {
+      border: 1px solid #fff;
+      width: 12px;
+      height: 12px;
+      background: transparent;
+      opacity: 1;
+  }
+
+  .swiper-pagination-bullet-active {
+      background: #fff !important;
+      border: 1px solid #fff;
+  }
+</style>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+      spaceBetween: 0,
+      centeredSlides: true,
+      autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+      },
+      pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+      },
+      navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+      },
+  });
+</script>
+
+{% schema %}
+{
+  "name": "CustomSlider",
+  "settings": [
+    {
+      "type":"text",
+      "label":"Heading",
+      "id":"Heading"
+    }
+  ],
+  "presets":[
+    {
+      "name": "CustomSlider"
+    }
+  ]
+}
+{% endschema %}

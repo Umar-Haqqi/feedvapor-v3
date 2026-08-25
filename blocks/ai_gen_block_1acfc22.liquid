@@ -1,0 +1,249 @@
+{% doc %}
+  @prompt
+    <div class="referral-bullet-RTL"></div>
+        <div class="referral-text-RTL">NEW YEAR DEALs Are LIVE NOW</div>
+    
+    , I want it like a slider that the NEW YEAR DEALS ARE LIVE NOW  going left to right in the slider
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-rtl-slider-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.padding_vertical }}px 0;
+  }
+
+  .ai-rtl-slider-track-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.gap }}px;
+    animation: ai-rtl-slide-{{ ai_gen_id }} {{ block.settings.animation_speed }}s linear infinite;
+    width: max-content;
+  }
+
+  .ai-rtl-slider-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.gap }}px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ai-rtl-slider-bullet-{{ ai_gen_id }} {
+    width: {{ block.settings.bullet_size }}px;
+    height: {{ block.settings.bullet_size }}px;
+    background-color: {{ block.settings.bullet_color }};
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .ai-rtl-slider-text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: {{ block.settings.font_weight }};
+    margin: 0;
+  }
+
+  @keyframes ai-rtl-slide-{{ ai_gen_id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .ai-rtl-slider-{{ ai_gen_id }}:hover .ai-rtl-slider-track-{{ ai_gen_id }} {
+    animation-play-state: {% if block.settings.pause_on_hover %}paused{% else %}running{% endif %};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-rtl-slider-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_vertical | times: 0.8 }}px 0;
+    }
+
+    .ai-rtl-slider-track-{{ ai_gen_id }} {
+      gap: {{ block.settings.gap | times: 0.8 }}px;
+    }
+
+    .ai-rtl-slider-item-{{ ai_gen_id }} {
+      gap: {{ block.settings.gap | times: 0.8 }}px;
+    }
+
+    .ai-rtl-slider-bullet-{{ ai_gen_id }} {
+      width: {{ block.settings.bullet_size | times: 0.8 }}px;
+      height: {{ block.settings.bullet_size | times: 0.8 }}px;
+    }
+
+    .ai-rtl-slider-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-rtl-slider-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-rtl-slider-track-{{ ai_gen_id }}">
+    {% for i in (1..10) %}
+      <div class="ai-rtl-slider-item-{{ ai_gen_id }}">
+        <div class="ai-rtl-slider-bullet-{{ ai_gen_id }}"></div>
+        <p class="ai-rtl-slider-text-{{ ai_gen_id }}">{{ block.settings.banner_text }}</p>
+      </div>
+    {% endfor %}
+    {% for i in (1..10) %}
+      <div class="ai-rtl-slider-item-{{ ai_gen_id }}">
+        <div class="ai-rtl-slider-bullet-{{ ai_gen_id }}"></div>
+        <p class="ai-rtl-slider-text-{{ ai_gen_id }}">{{ block.settings.banner_text }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RTL slider banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner text",
+      "default": "NEW YEAR DEALs Are LIVE NOW"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "label": "Animation speed",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "s",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "header",
+      "content": "Bullet"
+    },
+    {
+      "type": "color",
+      "id": "bullet_color",
+      "label": "Bullet color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "bullet_size",
+      "label": "Bullet size",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between items",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical padding",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "RTL slider banner"
+    }
+  ]
+}
+{% endschema %}

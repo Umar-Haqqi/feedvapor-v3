@@ -1,0 +1,421 @@
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  .main-custom-contact-container{
+    display: flex;
+    justify-content: center;
+    padding: 0 15rem;
+  }
+  .main-custom-contact-div{
+      width: 70%;
+  }
+  .custom-contact-input-label{
+    font-size: 14px;
+    font-family: HelveticaNeue_Bold;
+    color:#fff;
+    text-transform: uppercase;
+  }
+  .feed-contact-details{
+    width: 30%;
+    display:flex;
+    justify-content: flex-end;
+    margin-top: 120px;
+  }
+  .contact-page-goto-link{
+    /* padding-top: 60px */
+  }
+  .contact-page-goto-link>p{
+    font-size: 12px;
+    font-family: Helvetica;
+    color: #fff;
+  }
+  .contact-page-goto-link>p>a{
+      text-decoration: none;
+      font-size: 12px;
+      font-family:Helvetica;
+      color: #6e6e6e;
+  }
+
+  @media screen and (max-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    .main-custom-contact-container{
+      flex-direction: column;
+      padding: 0 5%;
+    }
+    .main-custom-contact-div{
+      width: 100%;
+    }
+
+    .feed-contact-details{
+      width: 100%;
+      justify-content: center;
+      margin-top: 0px;
+    }
+    .contact-page-goto-link{
+      /* padding-top: 80px */
+    }
+    .contact-page-goto-link>p{
+      font-size: 10px;
+    }
+    .contact-page-goto-link>p>a{
+      font-size: 10px;
+    }
+
+  }
+  @media screen and (max-width: 749px) {
+  }
+{%- endstyle -%}
+
+<div class="main-custom-contact-container color-{{ section.settings.color_scheme }} gradient">
+  <!-- editByMe -->
+  <div
+    class="main-custom-contact-div contact page-width--narrow section-{{ section.id }}-padding"
+  >
+    <!--
+      {%- if section.settings.heading != blank -%}
+        <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {{ section.settings.heading }}
+        </h2>
+      {%- else -%}
+        <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+      {%- endif -%}
+    -->
+    <!-- editByMe -- to change title -- commented the above -->
+
+    <!-- <h2 class="title">Contact Us</h2> to not use define padding for title -->
+    <h2
+      class=""
+      style="padding-top: 20px;padding-bottom: 40px; font-family: ArupalaGrotesk-SuperBold !important; color: #fff;font-size: 3rem;text-transform:uppercase;"
+    >
+      Contact Us
+    </h2>
+    {%- liquid
+      assign contact_form_class = 'isolate'
+      if settings.animations_reveal_on_scroll
+        assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
+      endif
+    -%}
+    
+    {%- comment -%}
+      Native Shopify contact form (Settings > Notifications > "Contact form"
+      sets the recipient) — replaces the Hulk Form Builder embed above. Free,
+      fully theme-styled, no app plan required. Sends: name, email, phone,
+      message.
+    {%- endcomment -%}
+
+
+    {% comment %} ----------------------- Using hulk forms now for contact us ----------------------- {% endcomment %}
+{% comment %}     
+    {%- form 'contact', class: contact_form_class, id: 'ContactForm' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-status form-status-list form__message" tabindex="-1" autofocus role="status">
+          <svg class="icon icon-success" aria-hidden="true" focusable="false" viewBox="0 0 13 13">
+            <circle cx="6.5" cy="6.5" r="6.5" fill="#4CAF50" />
+            <path fill="#FFF" d="M4 6.5l1.8 1.8L9 4.8" stroke="#FFF" stroke-width="1.2" fill="none" />
+          </svg>
+          {{ 'templates.contact.form.post_success' | t }}
+        </p>
+      {%- elsif form.errors -%}
+        <div class="form-status form__message" role="alert" tabindex="-1" autofocus>
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="field">
+        <input
+          class="field__input"
+          autocomplete="name"
+          type="text"
+          id="ContactForm-name"
+          name="contact[name]"
+          value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+          placeholder="{{ 'templates.contact.form.name' | t }}"
+        >
+        <label class="field__label custom-contact-input-label" for="ContactForm-name">
+          {{ 'templates.contact.form.name' | t }}
+        </label>
+      </div>
+
+      <div class="field">
+        <input
+          autocomplete="email"
+          type="email"
+          id="ContactForm-email"
+          class="field__input"
+          name="contact[email]"
+          spellcheck="false"
+          autocapitalize="off"
+          value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          aria-required="true"
+          required
+          placeholder="{{ 'templates.contact.form.email' | t }}"
+        >
+        <label class="field__label custom-contact-input-label" for="ContactForm-email">
+          {{- 'templates.contact.form.email' | t }}
+          <span aria-hidden="true">*</span></label
+        >
+      </div>
+
+      <div class="field">
+        <input
+          type="tel"
+          id="ContactForm-phone"
+          class="field__input"
+          autocomplete="tel"
+          name="contact[phone]"
+          pattern="[0-9\-]*"
+          value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+          placeholder="{{ 'templates.contact.form.phone' | t }}"
+        >
+        <label class="field__label custom-contact-input-label" for="ContactForm-phone">
+          {{ 'templates.contact.form.phone' | t }}
+        </label>
+      </div>
+
+      <div class="field">
+        <textarea
+          rows="5"
+          id="ContactForm-body"
+          class="text-area field__input"
+          name="contact[body]"
+          placeholder="{{ 'templates.contact.form.comment' | t }}"
+        >
+          {{- form.body -}}
+        </textarea>
+        <label class="field__label custom-contact-input-label" for="ContactForm-body">
+          {{ 'templates.contact.form.comment' | t }}
+        </label>
+      </div>
+
+      <button type="submit" class="contact-page-submit-btn">
+        Submit
+      </button>
+    {%- endform -%} {% endcomment %}
+
+    <div style="margin:0 auto;" class="pxFormGenerator" id="hCNKEaHVi1C2Z5mfbPjKIA"></div>
+
+    <div class="contact-page-goto-link">
+      <p>
+        HAVING ISSUES WITH YOUR PRODUCT?
+        <a href="{{ shop.url }}/pages/warranty-claims">CLICK HERE</a>
+      </p>
+      <p>
+        ARE YOU A RETAILER?
+        <a href="{{ shop.url }}/pages/wholesale-inquiries" style="text-decoration: none; font-size: 12px; font-family:Helvetica; color: #6e6e6e;"
+          >CLICK HERE</a
+        >
+      </p>
+    </div>
+  </div>
+
+  <div class="feed-contact-details">
+    <!-- <div style="border-right: 1px solid #6e6e6e; height: fit-content; padding-right: 25px;">
+      <h3 style="font-family: ArupalaGrotesk-SuperBold !important; color: #fff;">CALL US</h3>
+      <div class="contact-details-info">
+        <img
+          class="feed-contact-details-icon"
+          src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/phone-call.svg?v=1713144105"
+        >
+       <p class="phone-number">+1(444)445-1234</p>
+      </div>
+    </div> -->
+    <div class="contact-details-info-second" style="">
+      <h3 style="font-family: ArupalaGrotesk-SuperBold !important; color: #fff;">EMAIL US</h3>
+      <a href="mailto:support@feedvapor.com" style="text-decoration: none;">
+        <div class="contact-details-info">
+          <img
+            class="feed-contact-details-icon"
+            src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/mail.svg?v=1713144105"
+          >
+          <p style="top: -3px;">support@feedvapor.com</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="contact-with-us-block" style="">
+      <h3 style="font-family: ArupalaGrotesk-SuperBold !important; color: #fff;">CONNECT WITH US</h3>
+      <div class="contact-details-info">
+        <i style="color: #fff; font-size: 24px;" class="ri-tiktok-fill"></i>
+        <i style="color: #fff; font-size: 24px;" class="ri-instagram-line"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #ContactForm .field {
+    margin-bottom: 20px;
+  }
+  #ContactForm .field__label {
+    color: #fff;
+  }
+  #ContactForm .field__input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    border-radius: 0;
+    box-shadow: none;
+    color: #fff;
+  }
+  #ContactForm .field__input:focus {
+    border-bottom: 1px solid #fff;
+    box-shadow: none;
+  }
+  #ContactForm .contact-page-submit-btn {
+    margin-top: 10px;
+  }
+  #ContactForm .form-status {
+    margin-bottom: 20px;
+    color: #fff;
+  }
+  .phone-number {
+    color: white !important;
+    pointer-events: none;
+    user-select: all;
+    text-decoration: none; /* Reset any default link styling */
+}
+  .contact-with-us-block{
+    display: none;
+  }
+  .contact-page-submit-btn{
+    padding: 0 50px;
+    color: #fff;
+    background: #000;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    padding: 10px 60px;
+    position: absolute;
+    right: 0;
+    font-family: HelveticaNeue_reg;
+    cursor:pointer;
+  }
+  .contact-details-info{
+          display: flex;
+          justify-content: center;
+          align-items: baseline;
+          gap: 10px;
+          margin-top: 10px;
+  }
+  .contact-details-info>p{
+    font-family: HelveticaNeue_reg;
+    font-size: 12px;
+    color: #fff !important;
+  }
+  .contact-details-info-second{
+        padding-left: 25px;
+    }
+
+  @media screen and (max-width: 500px) {
+    .contact-with-us-block{
+        display: block;
+    }
+    .contact-page-submit-btn{
+        width: 100%;
+    }
+    .contact-details-info-second{
+        padding-left: 0;
+    }
+    .feed-contact-details {
+        justify-content: flex-start;
+        flex-direction: column;
+        margin-bottom: 50px;
+    }
+    .contact-details-info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: baseline;
+        gap: 10px;
+        margin-top: 10px;
+        margin-bottom: 40px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "t:sections.contact-form.settings.title.default",
+      "label": "t:sections.contact-form.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name"
+    }
+  ]
+}
+{% endschema %}

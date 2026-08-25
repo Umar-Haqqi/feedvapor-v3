@@ -1,0 +1,1534 @@
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{% if section.settings.image_shape == 'blob' %}
+  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- if section.settings.enable_quick_add -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  .description-wrapper-container>p>b {
+    font-weight: 700 !important;
+    color: #fff;
+  }
+  .description-wrapper-container>ul>li>b {
+    font-weight: 700 !important;
+    color: #fff;
+  }
+  .description-wrapper-container>p>a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+  }
+{%- endstyle -%}
+
+<!-- editByShahzaib -- adding images for Freezie and Sync -->
+{% comment %} <div class="banner-div">
+  {%- if collection.id == 287561482340 or collection.id == 287561547876 or collection.id == 287561613412 -%}
+    <img
+      class="banner-div-img"
+      src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/3000.png?v=1712328940"
+      alt=""
+    >
+  {% elsif collection.id == 302962442340 %}
+    <img
+      class="banner-div-img"
+      src="https://cdn.shopify.com/s/files/1/0625/2140/9636/files/Listing_banner_075e1819-43be-4ea6-9304-4091ddddd9fd.png?v=1748120403"
+      alt=""
+    >
+  {% else %}
+    <img
+      class="banner-div-img"
+      src="https://cdn.shopify.com/s/files/1/0625/2140/9636/files/Mask_Group_6.png?v=1718390448"
+      alt=""
+    >
+  {% endif %}
+
+  <img
+    class="banner-div-text"
+    src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/FEEDBANNERTEXT.svg?v=1712333397"
+    alt=""
+  >
+</div> {% endcomment %}
+
+<style>
+      {% comment %} toast styling {% endcomment %}
+  .collection-toast-wrapper {
+    position: relative;
+    }
+
+
+  .collection-page-toast {
+    background: #272727;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: toast-slide-down 0.4s ease forwards;
+    position: relative;
+  }
+
+  .collection-page-toast p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #e4e4e4;
+    line-height: 1.45;
+    font-family: 'Helvetica';
+  }
+
+  .toast-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    color: #b6b6b6;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+  }
+
+  .toast-close-btn:hover {
+    color:rgb(231, 232, 235);
+  }
+
+
+  @keyframes toast-slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .toast-hide {
+    animation: toast-fade-out 0.25s ease forwards;
+  }
+
+  @keyframes toast-fade-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+  }
+
+      {% comment %} .banner-div{
+        width: 100%;
+        height: 250px;
+        position: relative;
+        overflow: hidden;
+    }
+    .banner-div>img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      filter: brightness(0.8);
+    }
+
+    .banner-div>.banner-div-text{
+        width: 100%;
+        height: 70%;
+        object-fit: contain;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    } {% endcomment %}
+
+    {% comment %} .collection-page-toast>p{
+      font-size: 14px;
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Helvetica';
+    }
+    .collection-page-toast>i{
+      font-size: 25px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .collection-page-toast{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      /* border: 1px solid #fff; */
+      width: fit-content;
+      padding: 0px 20px;
+      border-radius: 5px;
+      margin-top: 30px;
+      background: #000;
+    }
+    @media only screen and (max-width: 768px) {
+      .collection-page-toast {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          flex-direction: row-reverse;
+          gap: 15px;
+          width: fit-content;
+          padding: 0px;
+      }
+      .collection-page-toast>i {
+          margin-top: -10px;
+          /* margin-right: -10px; */
+      }
+    } {% endcomment %}
+    {% comment %} @media only screen and (max-width: 500px) {
+        .banner-div{
+          display: none;
+        }
+    } {% endcomment %}
+</style>
+
+<div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
+    {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
+      <facet-filters-form class="facets facets-vertical-sort page-width small-hide no-js-hidden">
+        <form class="facets-vertical-form" id="FacetSortForm">
+          <div class="facet-filters sorting caption">
+            <div class="facet-filters__field">
+              <h2 class="facet-filters__label caption-large text-body">
+                <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
+              </h2>
+              <div class="select">
+                {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                <select
+                  name="sort_by"
+                  class="facet-filters__sort select__select caption-large"
+                  id="SortBy"
+                  aria-describedby="a11y-refresh-page-message"
+                >
+                  {%- for option in collection.sort_options -%}
+                    <option
+                      value="{{ option.value | escape }}"
+                      {% if option.value == sort_by %}
+                        selected="selected"
+                      {% endif %}
+                    >
+                      {{ option.name | escape }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                {% render 'icon-caret' %}
+              </div>
+            </div>
+            <noscript>
+              <button type="submit" class="facets__button-no-js button button--secondary">
+                {{ 'products.facets.sort_button' | t }}
+              </button>
+            </noscript>
+          </div>
+
+          <div class="product-count-vertical light" role="status">
+            <h2 class="product-count__text text-body">
+              <span id="ProductCountDesktop">
+                {%- if collection.results_count -%}
+                  {{
+                    'templates.search.results_with_count'
+                    | t: terms: collection.terms, count: collection.results_count
+                  }}
+                {%- elsif collection.products_count == collection.all_products_count -%}
+                  {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+                {%- else -%}
+                  {{
+                    'products.facets.product_count'
+                    | t: product_count: collection.products_count, count: collection.all_products_count
+                  }}
+                {%- endif -%}
+              </span>
+            </h2>
+            {%- render 'loading-spinner' -%}
+          </div>
+        </form>
+      </facet-filters-form>
+    {%- endif -%}
+
+    <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
+      {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+      {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+        <aside
+          aria-labelledby="verticalTitle"
+          class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+          id="main-collection-filters"
+          data-id="{{ section.id }}"
+        >
+          {% render 'facets',
+            results: collection,
+            enable_filtering: section.settings.enable_filtering,
+            enable_sorting: section.settings.enable_sorting,
+            filter_type: section.settings.filter_type,
+            paginate: paginate
+          %}
+        </aside>
+      {%- endif -%}
+
+      <div
+        class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+        id="ProductGridContainer"
+        {% if settings.animations_reveal_on_scroll %}
+          data-cascade
+        {% endif %}
+      >
+        <!-- <div class="collection-btns-box">fffff</div> -->
+        {%- if collection.products.size == 0 -%}
+          <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
+            <!-- editByMe -- adding collection btn at top of catalog with no product -->
+            <div class="collection-btns-box">
+              <div class="product-coll-tabs">
+                <!-- editByMe -- to split a, b, c form collection at breadcrumbs -->
+                <!--
+                  {% for collection in collections %}
+                    {% assign title_parts = collection.title | split: ' ' %}
+                    {% if title_parts.size > 1 %}
+                      {% assign modified_title = title_parts | slice: 1, title_parts.size %}
+                      {% assign display_title = modified_title | join: ' ' %}
+                    {% else %}
+                      {% assign display_title = collection.title %}
+                    {% endif %}
+                    <a href="{{ collection.url }}">
+                      <button
+                        id="{{ collection.handle }}"
+                        class="product-coll-tab-btn"
+                        data-collection="{{ collection.handle }}"
+                      >
+                        {{ display_title }}
+                      </button>
+                    </a>
+                  {% endfor %}
+                -->
+                <!-- editByShahzaib -- This edit was done for adding feed freezie and feed sync -->
+                {%- if collection.id == 287561482340
+                  or collection.id == 287561547876
+                  or collection.id == 320299466852
+                  or collection.id == 287561613412
+                  or collection.id == 302962442340
+                -%}
+                  {% comment %} <p> {{ collection.title }}</p> <p> {{ collection.id }} </p> {% endcomment %}
+                  <div class="collection-btns-box">
+                    <div class="product-coll-tabs">
+                      <a href="/collections/a-pods">
+                        <button id="pods-30k" class="product-coll-tab-btn" data-collection="pods-30k">Pods</button>
+                      </a>
+                      <a href="/collections/a-pods">
+                        <button id="pods" class="product-coll-tab-btn" data-collection="pods">Pods</button>
+                      </a>
+                      <a href="/collections/b-starter-kits">
+                        <button id="starter-kits" class="product-coll-tab-btn" data-collection="starter-kit">
+                          Starter Kits
+                        </button>
+                      </a>
+                      <a href="/collections/c-batteries">
+                        <button id="batteries" class="product-coll-tab-btn" data-collection="batteries">
+                          Batteries
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                {%- else -%}
+                  <div class="collection-btns-box">
+                    <div class="product-coll-tabs">
+                      <a href="/collections/feed-freezie">
+                        <button id="feed-freezie" class="product-coll-tab-btn" data-collection="feed-freezie">
+                          FREEZIE
+                        </button>
+                      </a>
+                      <a href="/collections/feed-sync">
+                        <button id="feed-sync" class="product-coll-tab-btn" data-collection="feed-sync">
+                          FEED SYNC
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="loading-overlay gradient"></div>
+            <div class="title-wrapper center">
+              <h2 class="title title--primary">
+                {{ 'sections.collection_template.empty' | t -}}
+                <br>
+                {{
+                  'sections.collection_template.use_fewer_filters_html'
+                  | t: link: collection.url, class: 'underlined-link link'
+                }}
+              </h2>
+              {%- render 'loading-spinner' -%}
+            </div>
+          </div>
+        {%- else -%}
+          <div class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}">
+            <div class="loading-overlay gradient"></div>
+
+            <!-- editByMe -- adding collection btn at top of catalog -->
+            <!--
+              <div class="collection-btns-box">
+                <div class="product-coll-tabs">
+                  <a href="/collections/a-pods">
+                    <button id="pods" class="product-coll-tab-btn" data-collection="pods">Pods</button>
+                  </a>
+                  <a href="/collections/b-starter-kits">
+                    <button id="starter-kits" class="product-coll-tab-btn" data-collection="starter-kit">
+                      Starter Kits
+                    </button>
+                  </a>
+                  <a href="/collections/c-batteries">
+                    <button id="batteries" class="product-coll-tab-btn" data-collection="batteries">Batteries</button>
+                  </a>
+                </div>
+              </div>
+            -->
+            <!-- editByShahzaib -- This edit was done for adding feed freezie and feed sync -->
+            {%- if collection.id == 287561482340
+              or collection.id == 287561547876
+              or collection.id == 287561613412
+              or collection.id == 302962442340
+            -%}
+              {% comment %} <p> {{ collection.title }}</p> <p> {{ collection.id }} </p> {% endcomment %}
+              <div class="collection-btns-box">
+                <div class="product-coll-tabs">
+                  <a href="/collections/pods-30k">
+                    <button id="pods-30k" class="product-coll-tab-btn" data-collection="pods-30k">Pods 30k</button>
+                  </a>
+                  <a href="/collections/a-pods">
+                    <button id="pods" class="product-coll-tab-btn" data-collection="pods">Pods 9K</button>
+                  </a>
+                  <a href="/collections/b-starter-kits">
+                    <button id="starter-kits" class="product-coll-tab-btn" data-collection="starter-kit">
+                      Starter Kits
+                    </button>
+                  </a>
+                  <a href="/collections/c-batteries">
+                    <button id="batteries" class="product-coll-tab-btn" data-collection="batteries">Batteries</button>
+                  </a>
+                </div>
+              </div>
+            {%- else -%}
+              <div class="collection-btns-box">
+                <div class="product-coll-tabs">
+                  <a href="/collections/feed-tank">
+                    <button id="feed-tank" class="product-coll-tab-btn" data-collection="feed-tank">
+                      Feed Tank
+                    </button>
+                  </a>
+                  {% comment %} <a href="/collections/feed-freezie">
+                    <button id="feed-freezie" class="product-coll-tab-btn" data-collection="feed-freezie">
+                      FREEZIE
+                    </button>
+                  </a>
+                  <a href="/collections/feed-sync">
+                    <button id="feed-sync" class="product-coll-tab-btn" data-collection="feed-sync">FEED SYNC</button>
+                  </a> {% endcomment %}
+                </div>
+              </div>
+            {% endif %}
+
+            {% comment %}
+              <div class="collection-page-toast">
+                <i class="ri-close-circle-line toast-close-btn"></i>
+                <p>
+                  To avail the 'Buy 5, Get 1 Free' offer, add six items to your cart; the sixth item will be free. Not
+                  applicable to Excise Duty
+                </p>
+              </div>
+            {% endcomment %}
+            <div class="collection-toast-wrapper">
+              {% for block in section.blocks %}
+                {% assign show_block = false %}
+
+                {% if block.settings.toast_collection == blank %}
+                  {% assign show_block = true %}
+                {% elsif collection.handle == block.settings.toast_collection %}
+                  {% assign show_block = true %}
+                {% endif %}
+
+                {% if show_block %}
+                  <div class="collection-page-toast" data-toast-id="{{ block.id }}">
+                    <button class="toast-close-btn" aria-label="Close">✕</button>
+                    <p>{{ block.settings.toast_message }}</p>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            <ul
+              id="product-grid"
+              data-id="{{ section.id }}"
+              class="
+                grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+                grid--{{ section.settings.columns_desktop }}-col-desktop
+              "
+            >
+              {%- liquid
+                assign quick_add_type = 'none'
+                if section.settings.enable_quick_add
+                  assign quick_add_type = 'standard'
+                endif
+              -%}
+              {%- for product in collection.products -%}
+                {% assign lazy_load = false %}
+                {%- if forloop.index > 2 -%}
+                  {%- assign lazy_load = true -%}
+                {%- endif -%}
+                <li
+                  class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                  {% if settings.animations_reveal_on_scroll %}
+                    data-cascade
+                    style="--animation-order: {{ forloop.index }};"
+                  {% endif %}
+                >
+                  <!--
+                    editByMe -- this edit was done by Shahzaib to disable the inc dec button incase product is sold out   -------------
+                  -->
+                  {% assign is_out_of_stock = true %}
+                  {% for variant in product.variants %}
+                    {% if variant.available %}
+                      {% assign is_out_of_stock = false %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+
+                  {% render 'card-product',
+                    card_product: product,
+                    is_out_of_stock: is_out_of_stock,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    image_shape: section.settings.image_shape,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    lazy_load: lazy_load,
+                    quick_add: quick_add_type,
+                    section_id: section.id
+                  %}
+
+                  <!-- <p>{{ is_out_of_stock }}</p> -->
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            {%- if paginate.pages > 1 -%}
+              {% render 'pagination', paginate: paginate, anchor: '' %}
+            {%- endif -%}
+
+            <div class="collection-page-desc-section">
+              {%- if collection.id == 320299466852 -%}
+                <div class="description-wrapper-container">
+                  <h1 class="main-heading">Experience the FEED TANK 120K — the biggest device FEED has ever made.</h1>
+<p class="para" dir="ltr"><span>With a massive 30mL tank and up to 120,000 puffs, this device is built to go the distance without constant top-ups or counting down.</span></p>
+<p class="para" dir="ltr"><span>What makes it different is the 4 alternating mesh coils. The coils switch as you go, helping the flavour stay smooth, clean, and consistent all the way to the last puff instead of turning harsh near the end.</span></p>
+<p class="para" dir="ltr"><span>Built around rich, sweet, true-to-taste flavours, every puff is made to feel as satisfying as the first.</span></p>
+<p class="para" dir="ltr"><span>A built-in indicator shows both e-liquid and battery levels, so you always know exactly how much is left.</span></p>
+<p class="para" dir="ltr"><span>Bold flavour. Big capacity. Built to last.</span></p>
+<p class="para" dir="ltr"><strong>THINK BIGGER. THINK TANK.</strong></p>
+<p><b><br></b></p>
+<p class="sub-heading" dir="ltr"><strong>KEY FEATURES:</strong></p>
+<p class="para" dir="ltr"><span><strong>1)</strong> <strong>Up to 120,000 Puffs:</strong> </span><span>The longest-running device in its class, built for extended use.</span></p>
+<p class="para" dir="ltr"><span><strong>2)</strong> <strong>30mL E-Liquid Capacity:</strong> </span><span>The largest tank in its class for fewer interruptions.</span></p>
+<p class="para" dir="ltr"><span><strong>3)</strong> <strong>4 Alternating Mesh Coils:</strong> </span><span>Coils alternate during use to help deliver consistent, clean flavour until the last puff.</span></p>
+<p class="para" dir="ltr"><span><strong>4)</strong> <strong>E liquid &amp; Battery Indicator</strong></span></p>
+<p class="para" dir="ltr"><span><strong>5)</strong> <strong>Adjustable Airflow: </strong></span><span>Customize the draw exactly how you like it.</span></p>
+<p class="para" dir="ltr"><span><strong>6)</strong> <strong>1000mAh Type-C Rechargeable Battery: </strong></span><span>Reliable, fast-charging power for all-day use.<br><br></span><b></b></p>
+<p class="sub-heading" dir="ltr"><strong>AVAILABLE FLAVOURS:</strong></p>
+<p class="para" dir="ltr"><span>1) <strong>Banana Ice: </strong></span><span>Smooth ripe banana finished with a refreshing icy breeze.</span></p>
+<p class="para" dir="ltr"><span>2) <strong>Classic Ice:</strong> </span><span>Crisp, clean menthol for a simple, refreshing hit.</span></p>
+<p class="para" dir="ltr"><span>3) <strong>Super Sour Blue Razz: </strong></span><span>Tangy blue raspberry with a sweet-and-sour kick.</span></p>
+<p class="para" dir="ltr"><span>4) <strong>Grape Ice:</strong> </span><span>Bold Concord-style grape with a cool exhale.</span></p>
+<p class="para" dir="ltr"><span>5) <strong>Mango Ice:</strong> </span><span>Juicy tropical mango over a wave of cool ice.</span></p>
+<p class="para" dir="ltr"><span>6) <strong>Mixed Berries:</strong> </span><span>A fresh burst of strawberries, blueberries, and raspberries.</span></p>
+<p class="para" dir="ltr"><span>7) <strong>Strawberry Ice:</strong> </span><span>Sweet summer strawberries with an icy touch.</span></p>
+<p class="para" dir="ltr"><span>8) <strong>Watermelon Ice:</strong> </span><span>Refreshing watermelon with a cool, icy edge.</span></p>
+<p class="para" dir="ltr"><span>9) <strong>White Peach:</strong> </span><span>Soft, sweet white peach with naturally smooth undertones.</span></p>
+<p class="para" dir="ltr"><span>10) <strong>Super Spearmint:</strong> </span><span>Clean, crisp spearmint for a cool, refreshing finish.</span><span><br></span><span><br></span><strong><br>Frequently Asked Questions</strong></p>
+<p class="para" dir="ltr"><strong>✔ How many puffs does the FEED TANK 120K provide?</strong></p>
+<p class="para" dir="ltr"><span>The FEED TANK 120K delivers </span><span>up to 120,000 puffs</span><span>, making it one of the longest-lasting devices in its class. Actual puff count may vary depending on usage habits.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ What makes the FEED TANK 120K different from other devices?</strong></p>
+<p class="para" dir="ltr"><span>The FEED TANK 120K features </span><span>4 alternating mesh coils</span><span> that switch during use. This helps maintain a smooth, consistent flavour experience from the first puff to the last.</span></p>
+<p class="para" dir="ltr"><span>The device comes with a </span><span>30mL e-liquid capacity</span><span>, one of the largest tanks available, allowing for extended use with fewer interruptions.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ Does the flavour stay consistent throughout the life of the device?</strong></p>
+<p class="para" dir="ltr"><span>Yes. The alternating mesh coil technology is designed to help prevent flavour degradation and deliver a clean, satisfying taste throughout the device's lifespan.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ How do I know when the battery or e-liquid is running low?</strong></p>
+<p class="para" dir="ltr"><span>The FEED TANK 120K includes a </span><span>battery and e-liquid indicator</span><span>, allowing you to easily monitor both levels and know when it's time to recharge.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ Is the FEED TANK 120K rechargeable?</strong></p>
+<p class="para" dir="ltr"><span>Yes. The device features a </span><span>1000mAh rechargeable battery</span><span> and charges via a </span><span>Type-C USB cable</span><span> for fast and convenient charging.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ Can I adjust the airflow?</strong></p>
+<p class="para" dir="ltr"><span>Absolutely. The FEED TANK 120K comes with </span><span>adjustable airflow</span><span>, allowing you to customize your draw from a tighter pull to a more open airflow experience.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ How long does the battery last?</strong></p>
+<p class="para" dir="ltr"><span>The 1000mAh battery is designed to provide all-day performance for most users. Battery life will vary based on individual usage patterns and airflow settings.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ Is the FEED TANK 120K suitable for heavy users?</strong></p>
+<p class="para" dir="ltr"><span>Yes. With </span><span>up to 120,000 puffs</span><span>, a </span><span>30mL tank</span><span>, and a </span><span>rechargeable battery</span><span>, the FEED TANK 120K is specifically designed for users looking for maximum longevity and convenience.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ Does the device require refilling?</strong></p>
+<p class="para" dir="ltr"><span>No. The FEED TANK 120K comes pre-filled and is designed for long-lasting use without the need for refilling.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ What type of charging port does the FEED TANK 120K use?</strong></p>
+<p class="para" dir="ltr"><span>The device uses a </span><span>USB Type-C charging port</span><span>, offering fast and reliable charging.</span></p>
+<hr>
+<p class="para" dir="ltr"><strong>✔ What does "THINK BIGGER. THINK TANK." mean?</strong></p>
+<p class="para" dir="ltr"><span>It reflects everything the FEED TANK 120K is built for: </span><span>bigger capacity, longer-lasting performance, consistent flavour, and fewer interruptions compared to traditional devices. </span></p>
+<p><br></p>
+                </div>
+              {%- endif -%}
+
+              {%- if request.path == '/collections/feed-sync-25k-disposable-vape' -%}
+                <div class="description-wrapper-container">
+                  <h1 class="main-heading">FEED SYNC Disposable Vape: The Future of Vaping</h1>
+                  <p class="para">
+                    Finding the right vape can often be a laborious choice. If you’re an avid vaper with skin in the
+                    game, you’ve probably gone through multiple vapes from different manufacturers on your quest to find
+                    the ideal device that gives you an unparalleled vaping experience with a smooth drag and a flavorful
+                    draw.
+                  </p>
+                  <p class="para">
+                    Fortunately, old and new vapers looking for the perfect device don’t have to scour through random,
+                    obscure crevices of the internet anymore. FEED SYNC Disposable Vape is a revolutionary vaping device
+                    that has shaken up the Canadian vape industry. Brought to you by one of the best Canadian vape
+                    companies, FEED SYNC is a revolutionary smart disposable vape that is light years ahead of the
+                    competition.
+                  </p>
+                  <p class="para">
+                    So what separates FEED SYNC from the countless other disposable vapes on the market? After all,
+                    these disposables have also come and gone like most fads before them. In this instance, the primary
+                    difference is that FEED SYNC is a product that’s here to stay.
+                  </p>
+
+                  <h2 class="sub-heading sub-heading-h2">FEED SYNC: The Smartest Vape on the Market</h2>
+                  <p class="para">
+                    Featuring a revolutionary touch-screen, FEED SYNC comes with four distinct power modes. In addition,
+                    it can also connect to your phone, allowing you to use it as a smart gadget. Vapers will also be
+                    thrilled to learn that our cutting-edge new device has state-of-the-art features that have never
+                    been seen before.
+                  </p>
+                  <p class="para">
+                    Once you have connected the SYNC to your phone, you can receive and view text notifications and
+                    social media updates on it. Furthermore, you can also use the vape to control your phone’s camera
+                    while puffing away on your favorite flavor. And if that wasn’t enough, we have another surprise in
+                    store for you. FEED SYNC also has call functionality, allowing you to accept or decline calls
+                    without needing to pull your phone out of your pocket.
+                  </p>
+                  <h3 class="sub-heading">A Vaping Experience Like No Other</h3>
+                  <p class="para">
+                    Smart features and functionalities are definitely a selling point for a vape. However, the vaping
+                    experience matters more than anything else for vapers. FEED SYNC sets itself apart from all other
+                    disposable vapes on the market by offering a premium quality vaping experience. Our team at FEED
+                    worked diligently hard, spending countless hours in the lab to craft the ultimate vape for our
+                    Canadian vapers.
+                  </p>
+                  <p class="para">
+                    Unlike other vapes on the market, FEED SYNC is designed to last. Powered by an 850mAh battery and a
+                    20ML tank, our latest invention will give you the smoothest and most enjoyable vaping experience for
+                    25,000 puffs. We have designed our vape to give you a great hit without being overpowering, which is
+                    why the FEED SYNC is currently available in 20mg strength. Like other FEED products, SYNC comes with
+                    an exceptional double-mesh coil that ensures each puff is flavorful without being overpowering.
+                  </p>
+                  <p class="para">
+                    To take your vaping experience to the next level, we’ve also incorporated an adjustable air flow
+                    mechanism, allowing you to set your vape’s output per your preferences. The FEED SYNC also comes
+                    with a rechargeable battery that utilizes a type-C cable.
+                  </p>
+                  <h3 class="sub-heading">Feed Sync 25000 Disposable Vape Smart Functions</h3>
+                  <ul>
+                    <li>Camera Control</li>
+                    <li>Social Media Control</li>
+                    <li>Call Function</li>
+                    <li>Notifications and Games</li>
+                    <li>Connects to Android and Apple</li>
+                  </ul>
+                  <h3 class="sub-heading">The Best Disposable Vape in Canada - Available Now</h3>
+                  <p class="para">
+                    If you’re looking for the best disposable vape in Canada, you’ll be glad to know that the FEED SYNC
+                    is available now. It’s available in fourteen different flavors. Consider checking out our store
+                    today and upgrade your vaping game to the next level.
+                  </p>
+                </div>
+              {%- endif -%}
+
+              {%- if collection.id == 302962442340 -%}
+                <div class="description-wrapper-container">
+                  <h1 class="main-heading">Feed Pod 30K – Canada's Game-Changer in High-Puff Vaping</h1>
+                  <p class="para">
+                    Welcome to the home of next-level vaping. The Feed Pod 30K series isn’t just a new launch—it’s a
+                    whole new era. Born and built for Canadian vapers who want everything—longer life, bolder flavor,
+                    no-fuss convenience, and no compromises. Forget the 9K. We’re talking up to 30,000 puffs of smooth
+                    satisfaction, powered by pods that don’t quit.
+                  </p>
+                  <p class="para">
+                    Whether you’re a seasoned cloud-chaser or just tired of burning through disposables that fade too
+                    fast, the 30K Feed Pod system is the upgrade you’ve been waiting for.
+                  </p>
+                  <h2 class="sub-heading sub-heading-h2">30K Puffs? Yup. That’s Triple the Fun</h2>
+                  <p class="para">
+                    Let’s be real: running out of puffs mid-day is a buzzkill. That’s why Feed Pod 30K went big. These
+                    pre-filled pods offer 20mL of e-liquid, delivering up to 30,000 puffs—so you can go days (or weeks)
+                    without swapping pods. And thanks to the NANO NEO Mesh Coil, every puff hits clean, crisp, and full
+                    of flavor—right to the last draw.
+                  </p>
+                  <p class="para">
+                    Pair any pod with your rechargeable FEED battery (sold separately), and you're ready to roll. It’s a
+                    disposable experience with a rechargeable twist—better for your wallet, better for your
+                    satisfaction.
+                  </p>
+                  <p class="sub-heading">The Flavors – 10 Bold Choices, One Legendary Lineup</p>
+                  <p class="para">
+                    We didn’t just crank up the puff count. We made sure every Feed Pod 30K hits with serious flavor.
+                    These aren't your basic blends—each pod was crafted with real vape heads in mind.
+                  </p>
+                  <p class="para">Here’s what’s hot right now:</p>
+                  <ul>
+                    <li>
+                      <b>Apple Peach Strawww Feed Pod 30K – </b> A triple-fruit dream. Juicy apples, mellow peaches, and
+                      sweet strawberries collide for a smooth, all-day vape.
+                    </li>
+                    <li>
+                      <b>Baddie Blueberries Feed Pod 30K –</b>Bold, juicy blueberries with a tangy twist. A must-have
+                      for berry lovers who like it punchy.
+                    </li>
+                    <li>
+                      <b>Berries in the 6ix Feed Pod 30K –</b>Sweet strawberries, tart cherries, and rich grapes in a
+                      perfectly balanced berry medley.
+                    </li>
+                    <li>
+                      <b>Frosted Strawberries Feed Pod 30K –</b>Classic strawberry sweetness with a cool menthol breeze.
+                      Refreshing and nostalgic.
+                    </li>
+                    <li>
+                      <b>Groovy Grape Feed Pod 30K –</b>– Think deep purple grape candy with a smooth, tangy exhale. One
+                      of the juiciest vapes you’ll ever hit.
+                    </li>
+                    <li>
+                      <b>Kiwi Passionfruit Guava Feed Pod 30K –</b>A tropical explosion with the zing of kiwi, the tang
+                      of passionfruit, and the smoothness of guava.
+                    </li>
+                    <li>
+                      <b>Northern Blue Razz Feed Pod 30K –</b>The classic blue raspberry flavor you crave with an icy
+                      twist made for cold-weather sessions.
+                    </li>
+                    <li>
+                      <b>OG CO (Brisky Classic Red) Feed Pod 30K –</b>A rich, cola-inspired vape with subtle hints of
+                      vanilla, citrus, and spice. A throwback flavor with modern smoothness.
+                    </li>
+                    <li>
+                      <b>Poppin' StrawKiwi Feed Pod 30K –</b>Fresh strawberries and zesty kiwi blended like a smoothie
+                      on-the-go.
+                    </li>
+                    <li>
+                      <b>Watermelon Mango Tango Feed Pod 30K –</b>A tropical dance between juicy watermelon and ripe
+                      mango with a kick of citrus.
+                    </li>
+                  </ul>
+                  <p class="para">
+                    Each pod is crafted for consistent flavor, high output, and smooth vapor—so you’re never left with a
+                    burnt or fading hit.
+                  </p>
+                  <h2 class="sub-heading sub-heading-h2">Why Vapers are Switching to Feed Pod 30K</h2>
+                  <h3 class="sub-heading">High Puff Count</h3>
+                  <p class="para">Up to 30K puffs per pod means fewer replacements, more satisfaction.</p>
+                  <h3 class="sub-heading">Unmatched Flavor Lineup</h3>
+                  <p class="para">No filler flavors. Every one of our 10 options is a banger.</p>
+                  <h3 class="sub-heading">Pods with Batteries? Yes Please.</h3>
+                  <p class="para">
+                    The Feed Pod 30K system uses rechargeable batteries, so you get the performance of a device without
+                    the bulk or learning curve.
+                  </p>
+                  <h3 class="sub-heading">Easy to Use</h3>
+                  <p class="para">Snap in a pod, charge your battery, and puff. No refills, no leaks, no mess.</p>
+                  <h3 class="sub-heading">Canadian Built</h3>
+                  <p class="para">
+                    FEED is a proudly Canadian brand—designed with the preferences of Canadian vapers in mind. And yeah,
+                    that includes higher puff counts and way better flavor.
+                  </p>
+                  <h3 class="sub-heading">Technical Specs</h3>
+                  <ul>
+                    <li><b>E-Liquid Capacity: </b>20 mL</li>
+                    <li><b>Puff Count: </b>Up to 30,000</li>
+                    <li><b>Nicotine Strength: </b>20 mg/mL</li>
+                    <li><b>Coil Type: </b>NANO NEO Mesh Coil</li>
+                    <li><b>Pod Type: </b>Pre-filled, non-refillable</li>
+                    <li><b>Compatibility: </b>FEED batteries only (sold separately)</li>
+                    <li><b>Usage: </b>Mouth-to-lung, smooth draw</li>
+                  </ul>
+                  <h3 class="sub-heading">FAQs</h3>
+                  <p class="para"><b>Q: How long does a Feed Pod 30K last?</b></p>
+                  <p class="para">
+                    A: With up to 30,000 puffs, most users get several weeks of use from one pod depending on frequency.
+                  </p>
+                  <p class="para"><b>Q: Can I use any battery with Feed Pod 30K pods?</b></p>
+                  <p class="para">A: No. These pods are designed to work exclusively with official FEED batteries.</p>
+                  <p class="para"><b>Q: Are Feed Pod 30Kflavors sweet or icy?</b></p>
+                  <p class="para">
+                    A: We offer both! Some are fruit-forward (like Apple Peach Strawww), while others bring the chill
+                    (like Frosted Strawberries and Northern Blue Razz).
+                  </p>
+                  <p class="para"><b>Q: Is the pod refillable?</b></p>
+                  <p class="para">
+                    A: Nope. Each pod comes pre-filled and is designed to be replaced once the flavor fades.
+                  </p>
+                  <p class="para"><b>Q: Where can I buy the 30k Feed Pod system?</b></p>
+                  <p class="para">A: Right here at Feed Vapor—Canada’s go-to source for premium vape gear.</p>
+                  <h3 class="sub-heading">Ready to Switch?</h3>
+                  <p class="para">
+                    <a href="{{ collection.handle }}">Feed Pod 30K</a> is not just a pod—it’s a full-on flavor upgrade
+                    with serious staying power. Whether you're new to pods with batteries or just tired of weak
+                    disposables, FEED is built to perform.
+                  </p>
+                  <p class="para">
+                    With flavors for every palate and a device that won’t quit, it’s time to level up your vape with the
+                    30K Feed Pod collection. Grab yours now and discover why more Canadians are making the switch to
+                    FEED.
+                  </p>
+                </div>
+              {%- endif -%}
+
+              {%- if request.path == '/collections/vape-pods-in-canada' -%}
+                <div class="description-wrapper-container">
+                  <h1 class="main-heading">The Best Vape Pods in Canada</h1>
+                  <p class="para">
+                    The world of vaping has come a long way. If you were familiar with the vaping scene in its infancy,
+                    nearly two decades ago, you’ll remember that most vape devices were ginormous inventions that could
+                    barely fit in your pocket. These devices featured a large tank, an equally large battery, and a
+                    sizable mouthpiece.
+                  </p>
+                  <p class="para">
+                    Today, that’s no longer the case. Vape pod systems have changed the game. These devices are
+                    functional, compact, and portable, meaning you can carry them easily. Some are smaller than the palm
+                    of your hand.
+                  </p>
+                  <p class="para">
+                    These modern devices only have two essential parts: a pod and a battery. The pod contains E-liquid
+                    and a built-in coil, while the battery powers the device.
+                  </p>
+                  <p class="para">
+                    You’re probably familiar with the vape pods that have flooded the market in the past decade. Many
+                    different vape pod manufacturers compete for a slice of the pie in the market. However, if you’re
+                    looking for the best vape pods in Canada, you only have one option - FEED Vapor.
+                  </p>
+                  <p class="para">
+                    FEED Vapor is unlike any other vape manufacturer on the market. We’re not a corporation. Instead,
+                    our identity is derived from streetwear influences. We pride ourselves on being different and
+                    unique, prioritizing customer experience and service over everything else.
+                  </p>
+                  <p class="para">
+                    Created by Canadians for Canadian vapers, FEED is for people who don’t follow the crowd but instead
+                    forge their own path. That’s why when we tell you that we have the best pod system vape on the
+                    market, we mean it.
+                  </p>
+                  <h2 class="sub-heading sub-heading-h2">FEED Vapor - The Best Pod Vape in Canada</h2>
+                  <p class="para">
+                    FEED Vapor has the best pod vape in Canada. We’ve spent significant time in the lab, researching
+                    different ways to improve our vape pods. The result is what we have today. Our vape pods systems are
+                    atypical. Firstly, they feature a smartscreen that shows both battery and E-liquid levels, ensuring
+                    you never run out of juice literally or figuratively while chasing clouds and a nicotine high.
+                  </p>
+                  <p class="para">
+                    More importantly, the pods for our vape devices are also revolutionary. They come pre-filled with
+                    18ML liquid, meaning you don’t have to worry about a refill for days. You can reliably puff on your
+                    pods at least 9000 times.
+                  </p>
+                  <p class="para">
+                    Our pods also feature a cutting-edge neo mesh coil that ensures smooth and consistent flavor. In
+                    addition to the mesh coil, our vape pod systems also have a reusable 550mAH battery that supports
+                    USB-C charging.
+                  </p>
+                  <p class="para">
+                    FEED Vapor pods currently come in 20 different flavors, meaning we have something for everyone. The
+                    Freezy Berry Peachy might be perfect for you if you want something to help you cool down in the
+                    sweltering heat. Similarly, the Caribbean White might be perfect to take along with you for a
+                    tropical vacation.
+                  </p>
+                  <p class="para">
+                    The best news is that our vape pods start from only $15.99. We also have a special “Buy 5, Get 1
+                    Free” offer on all purchases, meaning you only have to pay for three pods instead of four. And if
+                    that wasn’t enough, you’ll also be delighted to know that we provide free shipping on orders over
+                    $80. So, sit back at home, kick your feet up, and relax as you wait for the best vape pods in Canada
+                    to be delivered to your doorstep.
+                  </p>
+                  <h3 class="sub-heading">Is a Vape Pod System the Right Choice for You?</h3>
+                  <p class="para">
+                    Choosing the right vape device can significantly improve your vaping experience. Imagine drawing
+                    puffs from a device that is heavy with a poorly designed frame that doesn’t quite fit your hand
+                    properly. Such experiences can take the joy out of vaping altogether.
+                  </p>
+                  <p class="para">
+                    Vape pod systems have become more popular over the years because of their sleek form factor and
+                    portability. Moreover, they have also made vaping more accessible to a larger section of the
+                    population. You don’t need to concern yourself with knowledge of tanks or coils since pod systems
+                    simplify everything.
+                  </p>
+                  <p class="para">
+                    In addition, vape pods are also known for delivering a smooth and satisfying hit, often using
+                    nicotine salts for a more immediate nicotine delivery. If you value convenience, portability, and a
+                    satisfying hit, a vape pod system could be the right choice for you.
+                  </p>
+                  <h3 class="sub-heading">Buy the Best Pod Vape in Canada</h3>
+                  <p class="para">
+                    If you’re looking to buy one of the best vape pods in Canada, you’ve come to the right place. At
+                    FEED Vapor, your vaping experience matters to us. It’s our foremost priority, which is why we’ve
+                    worked tirelessly to create the best pod vape system.
+                  </p>
+                  <p class="para">
+                    Stand out from the crowd today by purchasing a pod vape system that focuses on promotiong
+                    individuality and uniqueness. Check out our store today to find the best vape pods in Canada.
+                  </p>
+                </div>
+              {%- endif -%}
+              {%- if request.path == '/collections/vape-starter-kits-canada' -%}
+                <div class="description-wrapper-container">
+                  <h1 class="main-heading">FEED VAPOR: Bringing You The Best Vape Starter Kit in Canada</h1>
+                  <p class="para">
+                    If you’re only just beginning your journey in the vaping world or switching from one manufacturer to
+                    another in your quest for the best vape, starting with a new vape starter kit is always a good idea.
+                    It allows you to test the waters and sample a new vape device with different flavors.
+                  </p>
+                  <p class="para">
+                    Be cautioned as you proceed because once you try FEED’s vape starter kit, there’s no going back.
+                    We’ve invested considerable time and resources to craft the best vape starter kit you’ll find
+                    anywhere on the internet or in retail shops. But our vape isn’t for the faint-hearted.
+                  </p>
+                  <p class="para">
+                    Influencer by streetwear designs, FEED vapes are designed and built for people who want to stand out
+                    from the crowd. It’s for people who want to amplify their voice instead of letting it be drowned
+                    out.
+                  </p>
+                  <p class="para">
+                    However, style without substance is pointless, and we take these words to heart at FEED. That’s
+                    precisely why we’ve worked diligently over the past few years to perfect our vape devices. Our focus
+                    has always been to curate a unique and unparalleled customer experience, and our vape starter kits
+                    provide exactly that.
+                  </p>
+                  <h2 class="sub-heading sub-heading-h2">Why Should You Opt for a Vape Starter Kit?</h2>
+                  <p class="para">
+                    A vape starter kit is the perfect entry point for those new to vaping. These kits typically include
+                    everything needed to begin vaping right out of the box. Our vape kit comes with a device, a pod, and
+                    a charger. Many kits also feature adjustable settings, allowing users to customize their vaping
+                    experience as they grow more confident and knowledgeable.
+                  </p>
+                  <p class="para">
+                    Designed for simplicity and ease of use, we offer the best all-in-one vape starter kit for only
+                    $24.99. Our kits offer a convenient and affordable way to explore the world of vaping and come in
+                    fifteen different flavors.
+                  </p>
+                  <h3 class="sub-heading">Get Your Hands on the Premium Vape Starter Kit in Canada</h3>
+                  <p class="para">
+                    Featuring a 550 mAH rechargeable battery compatible with USB-C cables, our starter kit also has
+                    several other promising features that make it one of the best vape pod starter kits on the market.
+                  </p>
+                  <p class="para">
+                    We’ve designed our vape device based on considerable feedback from long-term vapers. The result is
+                    the best all-in-one vape starter kit that has an ergonomic mouthpiece, facilitating a smooth vaping
+                    experience. Our vape device also has a smart screen that helps you keep track of battery levels,
+                    ensuring your vape doesn’t die on you when you most need it. You can also use the smart screen to
+                    keep track of the E-liquid levels, although you most likely won’t need to worry about it since our
+                    devices come with 18ML pods, capable of delivering up to 9,000 puffs.
+                  </p>
+                  <p class="para">
+                    If you still need more convincing, you’ll also be delighted to learn that in addition to
+                    incorporating a state-of-the-art neo double mesh coil, we’ve also added a vent to the bottom of our
+                    vape device for adjustable airflow. Vape how you want, when you want with our vape pod starter kits.
+                  </p>
+                  <h3 class="sub-heading">So What Do Our Vape Starter Kits Include?</h3>
+                  <p class="para">
+                    Each starter kit comes with an 18 ml pod, a battery, and a charging cable. Depending on how heavily
+                    you vape, a starter kit will last you from anywhere between a week to a month.
+                  </p>
+                  <p class="para">
+                    Our starter kits only cost $24.99 and are available for all flavors, meaning if it’s your first-time
+                    trying out a FEED vape, all you have to do is find the flavor you like the most and buy a starter
+                    kit. It’s really that simple.
+                  </p>
+                  <p class="para">
+                    We currently have a wide array of starter kits in our store. Whether you’re looking to enjoy the
+                    summer sun while vaping on some Frosted Strawberries or want to go all-out and party like you’re in
+                    tropical paradise with the Kiwi Passionfruit Guava, our vape starter kits will more than meet your
+                    expectations.
+                  </p>
+                  <p class="para">
+                    We also have an amazing “Buy 5, Get 1 Free” offer that can currently be availed on our website.
+                    Under this offer, you can buy four separate starter kits and only have to pay for three. It also
+                    covers people buying one starter kit and adding at least three other products, such as pods or
+                    batteries.
+                  </p>
+                  <h3 class="sub-heading">
+                    Experience a Premium Vaping Experience Today by Purchasing the Best Vape Pod Starter Kit in Canada
+                  </h3>
+                  <p class="para">
+                    FEED isn’t like all the other vape manufacturers out there. We’re a progressive vape manufacturer
+                    with a unique style and identity. Hence, we’re not your typical corporation.
+                  </p>
+                  <p class="para">
+                    If you’re looking to break out of the mold and don’t conform or fall under the influence of the
+                    world around you, you’ve come to the right place. Built by Canadians for you, the Canadian vaper, we
+                    promise to elevate your vaping experience. Set yourself apart from the rest of the herd and try out
+                    our vape starter kit today.
+                  </p>
+                </div>
+              {%- endif -%}
+              {%- if request.path == '/collections/feed-freezie-disposable-pods' -%}
+                <div class="description-wrapper-container">
+                  <h1 class="main-heading">FEED FREEZIE - The Best Disposable Vape in Canada</h1>
+                  <p class="para">
+                    Disposable vapes are all the rage right now, and rightfully so. If you’re a casual vaper who
+                    occasionally seeks the thrill of a nicotine hit, you most likely don’t want to get invested in the
+                    hassle of maintaining a vape device. In such instances, a disposable vape is the best option for
+                    you.
+                  </p>
+                  <p class="para">
+                    All you have to do is buy a disposable vape and start puffing away. You can enjoy blowing thick
+                    clouds while savoring your favorite flavor. Most disposable vape brands in Canada require you to
+                    purchase another disposable device once you run out of puffs, but FEED Vapor doesn’t hold you back
+                    with the same restrictions.
+                  </p>
+                  <p class="para">
+                    Built with the Canadian vaper in mind, FEED FREEZIE is the best disposable vape in Canada. Our
+                    product is like none other on the market. Before we dive deeper into the FEED FREEZIE, it is
+                    important to understand more about us.
+                  </p>
+                  <p class="para">
+                    FEED Vapor isn’t your typical vape manufacturing corporation. We pride ourselves on being different.
+                    Our goal has always been to promote individuality and authenticity, which is also reflected in our
+                    design and technology.
+                  </p>
+                  <p class="para">
+                    Inspired by streetwear influences, FEED aims to help you stand out from the crowd. Your vape says a
+                    lot about you. Imagine pulling your vape out as you stand among a sea of faces. You’re bound to
+                    leave a lasting impression on others. So, leaving the right impression is important, and that’s why
+                    you need a vape that encapsulates your personality perfectly.
+                  </p>
+                  <h2 class="sub-heading sub-heading-h2">
+                    What Makes FEED FREEZIE the Best Disposable Vape in Canada?
+                  </h2>
+                  <p class="para">
+                    At FEED Vapor, customer service matters. More importantly, we’ve always wanted to ensure that our
+                    users get the best vaping experience possible. That’s why we’ve worked diligently to create an
+                    unparalleled vaping experience for you.
+                  </p>
+                  <p class="para">
+                    The FEED FREEZIE is our signature, top-of-the-line disposable vape device. It is powered by our
+                    cutting-edge 550mAh battery that gives you up to 25K puffs. Furthermore, it also utilizes our double
+                    neo mesh coil, ensuring a smooth and pleasant flavor with every drag.
+                  </p>
+                  <p class="para">
+                    FEED FREEZIE is currently available in ten different flavors, including classics such as Frosted
+                    Peach Nectar, Banana Breeze, and Chilled Grapes.
+                  </p>
+                  <h3 class="sub-heading">
+                    What Sets FEED FREEZIE apart from the other Disposable Vape Brands in Canada?
+                  </h3>
+                  <p class="para">
+                    Our intention with every new product is to create something different and better, and we’ve
+                    accomplished the same with the FEED FREEZIE. Numerous disposable vape brands exist and operate in
+                    Canada. However, we can confidently say that the FEED FREEZIE outperforms everything available on
+                    the market.
+                  </p>
+                  <p class="para">
+                    First, we differentiate ourselves from other brands with our packaging. Our premium packaging
+                    features unique visuals that results in engaging unboxing experiences. Then, there’s the case of our
+                    unique and innovative products.
+                  </p>
+                  <p class="para">
+                    Our products are designed with vapers in mind. As a result, the FEED FREEZIE features an ergonomic
+                    mouthpiece to facillitate your vaping experience. The FEED FREEZIE also boasts a pocket-friendly,
+                    easy slide-in design, meaning it fits perfectly in your hand or pocket. The FREEZIE line also has
+                    ten different flavors to choose from because we believe diversity is the spice of life, and we
+                    wanted multiple flavors for every palette. Finally, the FREEZIE line also features a bottom vent
+                    that allows you to control and adjust the airflow to your liking.
+                  </p>
+                  <h3 class="sub-heading">Where to Buy Disposable Vapes in Canada?</h3>
+                  <p class="para">
+                    At FEED, we believe customer experience and convenience comes first. That’s why we’re proud to say
+                    that buying a disposable vape has never been easier. There’s no need to head to your closest vape
+                    shop to buy the best disposable vape in Canada. Instead, it comes right to your doorstep.
+                  </p>
+                  <p class="para">
+                    You can find your new disposable vape in our store. Choose from fifteen exciting flavors, available
+                    for only $23.99. We also have multiple promotional offers for our customers. Our “Buy 5, Get 1 Free”
+                    offer allows you to purchase four cutting-edge disposable vapes for the price of three. Similarly,
+                    we also offer free shipping on all orders over $80. Buying the best disposable pod in Canada has
+                    never been easier.
+                  </p>
+                  <h3 class="sub-heading">Buy the Best Disposable Pod in Canada</h3>
+                  <p class="para">
+                    Break out of the mold today and establish your unique identity and authenticity by investing in your
+                    favorite flavor of FEED FREEZIE today. With FEED, you’re not just buying a product. You’re elevating
+                    your lifestyle.
+                  </p>
+                </div>
+              {%- endif -%}
+              {%- if request.path == '/collections/batteries' -%}
+                <div class="description-wrapper-container">
+                  <h1 class="main-heading">FEED Vapor - Home to the Best Vape Batteries in Canada</h1>
+                  <p class="para">
+                    If you’re a vaper, you’ll know the anguish of pulling your vape out of your pocket and bringing it
+                    to your lips to take a drag, only to find no smoke emanating from it. Such instances have caused
+                    despair to many vapers. It can be a challenging situation, especially if you’re far from a charging
+                    station or don’t have a power bank handy.
+                  </p>
+                  <p class="para">
+                    Fortunately, that’s where FEED Vapor enters the mix. FEED isn’t just another vape manufacturer on
+                    the market. We’re not your typical corporation. At FEED, we believe in forging your own path and
+                    identity, which is why we've designed our vape devices and batteries to be different. More
+                    importantly, we’ve designed them to be better.
+                  </p>
+                  <p class="para">
+                    We’ve spent countless hours in the lab perfecting our products with you - the Canadian vaper - in
+                    mind. Inspired by streetwear influences, our product is built with a singular focus in mind,
+                    providing an unparalleled customer experience, and that’s why we’re the place you want to go to if
+                    you’re looking to buy batteries for vape mods.
+                  </p>
+                  <h2 class="sub-heading sub-heading-h2">What are Batteries for Vape Mods?</h2>
+                  <p class="para">
+                    Anyone familiar with vapes knows that they’ve come a long way. Vape devices used to have a very
+                    different look when they were first emerging in the mainstream. You would find vape tanks as large
+                    as your vape mod with humongous tanks. These designs were considered unsavory by many, leading to
+                    early vapers often being subjected to ridicule by the people around them.
+                  </p>
+                  <p class="para">
+                    However, vapes have considerably evolved since then. Today, large vape devices with massive tanks
+                    are no longer the norm. Instead, they’re considered devices suitable for vape connoisseurs. Their
+                    popularity has declined as they’ve been replaced by smaller vape mods that contain a pod and a
+                    battery. These new devices feature an ingenious design that makes these vape mods portable and
+                    sleek.
+                  </p>
+                  <p class="para">
+                    But while this explanation tells the story of how vapes have evolved, it doesn’t answer your
+                    question just yet. Vape mod batteries are power sources that provide the necessary energy to heat
+                    the coil in a vape device, allowing you to smoke the delicious E-liquid within the pod. Most vape
+                    mods typically use rechargeable lithium-ion batteries, and our vape mods do the same.
+                  </p>
+                  <p class="para">
+                    Our vape mods are powered by a rechargeable 550 mAh battery. It’s both powerful and has a high
+                    capacity, facilitating a smooth vaping experience that’s bound to enthrall your senses. As a result,
+                    we’re not being boastful but simply stating the facts when we say that FEED Vapor has the best vape
+                    mod batteries in Canada.
+                  </p>
+                  <h3 class="sub-heading">Buy Batteries for Vape Mods from the Comfort of Your Home</h3>
+                  <p class="para">
+                    Buying a battery for your vape mod has never been easier. FEED’s batteries are a step above the rest
+                    because they feature a smart LED screen that displays both battery and E-liquid levels. In addition,
+                    our batteries also have enough capacity to power your vape for up to 9000 puffs. The best part is
+                    that you can order our batteries online from the comfort of your home. There’s no need to worry
+                    about dressing up and visiting a store.
+                  </p>
+                  <p class="para">
+                    Our batteries are currently available in three colors: navy blue, black, and rose gold. You can
+                    purchase them for $9.99. We also have a special “Buy 5, Get 1 Free” offer, meaning you can stock up
+                    on four batteries for the cost of three. We also offer free shipping on orders over $80.
+                  </p>
+                  <h3 class="sub-heading">Why FEED Vapor Has the Best Batteries for Vape Mods</h3>
+                  <p class="para">
+                    Our batteries don’t just stand out because of their technical features or state-of-the-art design.
+                    They also outperform other batteries because of how well they integrate with our vape devices.
+                  </p>
+                  <p class="para">
+                    As a company made by vapers for vapers, our focus has always revolved around ensuring a quality
+                    vaping experience for our customers. A quality, high-powered vape requires a powerful battery, which
+                    is why we’ve devoted so much time to creating the perfect battery to elevate your vaping experience.
+                  </p>
+                  <h3 class="sub-heading">Invest in a FEED Vapor Battery Today</h3>
+                  <p class="para">
+                    Bid farewell to the days of running out of battery at the most inconvenient times. Invest in our
+                    batteries today and enjoy puffing on your favorite flavor as you stroll around town, watch a movie
+                    in your living room, or enjoy yourself during a night out with friends. Differentiate yourself from
+                    the herd today and embrace your individuality and uniqueness with FEED.
+                  </p>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endpaginate -%}
+    {% if section.settings.image_shape == 'arch' %}
+      {{ 'mask-arch.svg' | inline_asset_content }}
+    {%- endif -%}
+  </div>
+</collection-component>
+
+<!-- editByMe -- to show description only on first page -->
+<script>
+  const params = new URLSearchParams(window.location.search);
+
+  if (!params.has('page') || params.get('page') === '1') {
+    document.querySelector('.collection-page-desc-section').style.display = 'block';
+  } else {
+    document.querySelector('.collection-page-desc-section').style.display = 'none';
+  }
+</script>
+
+<script>
+  let buttons = document.querySelectorAll('.product-coll-tab-btn');
+  let podsBtn = document.querySelector('#pods');
+  let pods30kBtn = document.querySelector('#pods-30k');
+  let starterKitsBtn = document.querySelector('#starter-kits');
+  let batteriesBtn = document.querySelector('#batteries');
+  let freezieBtn = document.querySelector('#feed-freezie');
+  let feedTankBtn = document.querySelector('#feed-tank');
+  let syncBtn = document.querySelector('#feed-sync');
+
+  let pathSegments = window.location.pathname.split('/');
+  let collectionName = pathSegments[pathSegments.length - 1]; // gets the last segment of the URL, which basically tells what collection are we on
+
+  // let selectedButton = document.querySelector(`#${collectionName}`)
+
+  // console.log(collectionName," here collectionName")
+
+  if (collectionName === 'vape-pods-in-canada') {
+    podsBtn.classList.add('active-product-coll-tab-btn');
+  } else if (collectionName === 'pods-30k') {
+    pods30kBtn.classList.add('active-product-coll-tab-btn');
+  } else if (collectionName === 'vape-starter-kits-canada') {
+    starterKitsBtn.classList.add('active-product-coll-tab-btn');
+  } else if (collectionName === 'batteries') {
+    batteriesBtn.classList.add('active-product-coll-tab-btn');
+  } else if (collectionName === 'feed-tank') {
+    feedTankBtn.classList.add('active-product-coll-tab-btn');
+  } else if (collectionName === 'feed-freezie-disposable-pods') {
+    freezieBtn.classList.add('active-product-coll-tab-btn');
+  }
+  else if (collectionName === 'feed-sync-25k-disposable-vape') {
+    syncBtn.classList.add('active-product-coll-tab-btn');
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.collection-page-toast').forEach((toast) => {
+      const closeBtn = toast.querySelector('.toast-close-btn');
+
+        closeBtn.addEventListener('click', () => {
+          toast.classList.add('toast-hide');
+          setTimeout(() => toast.remove(), 250);
+        });
+      });
+    });
+</script>
+
+<!-- pods -->
+{% if collection.id == 287561482340 %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Disposable Pods",
+      "image": "",
+      "description": "If you're searching for the best vape pods in Canada, you've found the right place. At FEED Vapor, your vaping experience is our top priority. That's why we've dedicated ourselves to creating the ultimate Feed Pods system, designed to give you the best experience possible.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Feed Vapor"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "url": "https://feedvapor.com/collections/vape-pods-in-canada",
+        "priceCurrency": "CAD",
+        "lowPrice": "15.99",
+        "highPrice": "16"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "ratingCount": "512"
+      }
+    }
+  </script>
+{% endif %}
+
+<!-- Sync -->
+{% if collection.id == 289734885476 %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Feed Sync",
+      "image": "https://cdn.shopify.com/s/files/1/0625/2140/9636/files/freezie-banner-com-66e99863526d7.webp?v=1726585048",
+      "description": "When choosing your next vape, the Feed Sync has everything you need. It's not just a disposable vape, it's a device that enhances your lifestyle while delivering the satisfying experience you crave. With the Feed Sync Vape, you'll enjoy advanced features, sleek design, and reliable performance. Elevate your vaping experience with Feed Vape today.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Feed Vapor"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "url": "https://feedvapor.com/collections/feed-sync-25k-disposable-vape",
+        "priceCurrency": "CAD",
+        "lowPrice": "26.27",
+        "highPrice": "26.29"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.7",
+        "ratingCount": "585"
+      }
+    }
+  </script>
+{% endif %}
+
+<!-- Freezie -->
+{% if collection.id == 289734852708 %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Feed Freezie",
+      "image": "https://cdn.shopify.com/s/files/1/0625/2140/9636/files/freezie-banner-com-66e99863526d7.webp?v=1726585048",
+      "description": "Step out of the ordinary and define your individuality with FEED FREEZIE. When you choose FEED, you're not just making a purchase but enhancing your lifestyle. Embrace your favorite flavor today and experience the difference!",
+      "brand": {
+        "@type": "Brand",
+        "name": "Feed Vapor"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "url": "https://feedvapor.com/collections/feed-freezie-disposable-pods",
+        "priceCurrency": "CAD",
+        "lowPrice": "23.99",
+        "highPrice": "24"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.6",
+        "ratingCount": "564"
+      }
+    }
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.main-collection-product-grid.name",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 20,
+      "step": 4,
+      "default": 16,
+      "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.main-collection-product-grid.settings.columns_desktop.label"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "t:sections.main-collection-product-grid.settings.columns_mobile.label",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:sections.all.image_shape.options__1.label"
+        },
+        {
+          "value": "arch",
+          "label": "t:sections.all.image_shape.options__2.label"
+        },
+        {
+          "value": "blob",
+          "label": "t:sections.all.image_shape.options__3.label"
+        },
+        {
+          "value": "chevronleft",
+          "label": "t:sections.all.image_shape.options__4.label"
+        },
+        {
+          "value": "chevronright",
+          "label": "t:sections.all.image_shape.options__5.label"
+        },
+        {
+          "value": "diamond",
+          "label": "t:sections.all.image_shape.options__6.label"
+        },
+        {
+          "value": "parallelogram",
+          "label": "t:sections.all.image_shape.options__7.label"
+        },
+        {
+          "value": "round",
+          "label": "t:sections.all.image_shape.options__8.label"
+        }
+      ],
+      "default": "default",
+      "label": "t:sections.all.image_shape.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.enable_quick_buy.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
+        },
+        {
+          "value": "vertical",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"
+        },
+        {
+          "value": "drawer",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label"
+        }
+      ],
+      "default": "horizontal",
+      "label": "t:sections.main-collection-product-grid.settings.filter_type.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "toast",
+      "name": "Toast Message",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "toast_message",
+          "label": "Toast message text",
+          "default": "To avail the 'Buy 5, Get 1 Free' offer, add six items to your cart; the sixth item will be free. Not applicable to Excise Duty."
+        },
+        {
+          "type": "collection",
+          "id": "toast_collection",
+          "label": "Show only for this collection (optional)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [{ "name": "Collection Toast Message" }]
+}
+{% endschema %}

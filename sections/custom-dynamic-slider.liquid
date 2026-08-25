@@ -1,0 +1,215 @@
+<div class="custom-slider-banner-wrapper">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide">
+          <a href="{{ shop.url }}{{ block.settings.slide_url }}">
+            <picture>
+              <source media="(max-width: 850px)" srcset="{{ block.settings.mobile_image | img_url: 'master' }}">
+              <img
+                src="{{ block.settings.desktop_image | img_url: 'master' }}"
+                alt="slider banner {{ forloop.index }}"
+                width="auto"
+                height="auto"
+              >
+            </picture>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="swiper-button-prev">
+      
+    </div>
+    <div class="swiper-button-next">
+      
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+</div>
+
+<style>
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+  .swiper-wrapper{
+    transition-timing-function: ease-in-out;
+  }
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .swiper-slide>a>picture>img {
+    display: block;
+    width: 100%;
+    height: auto; /* fix black flicker */
+    object-fit: cover;
+  }
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: white;
+    width: 50px;
+    height: 50px;
+    background: rgba(231, 231, 231, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .swiper-button-prev{
+    margin-left: 1rem;
+  }
+  .swiper-button-next{
+    margin-right: 1rem;
+  }
+  .swiper-button-prev::after,
+  .swiper-button-next::after{
+    font-size: 20px; 
+  }
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    background: rgba(231, 231, 231, 0.5);
+  }
+  .new-banner-desktop {
+    display: block;
+  }
+  .new-banner-mob {
+    display: none;
+  }
+  .swiper-pagination {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+  }
+  .swiper-pagination-bullet {
+    border: 1px solid #fff;
+    width: 12px;
+    height: 12px;
+    background: transparent;
+    opacity: 1;
+  }
+  .swiper-pagination-bullet-active {
+    background: #fff !important;
+    border: 1px solid #fff;
+  }
+
+  @media only screen and (max-width: 850px) {
+    .new-banner-mob {
+      display: block;
+    }
+    .new-banner-destkop {
+      display: none;
+    }
+    .swiper-button-prev,
+    .swiper-button-next {
+      width: 30px;
+      height: 30px;
+    }
+    .swiper-button-prev::after,
+    .swiper-button-next::after{
+      font-size: 14px; 
+    }
+    .swiper-button-prev{
+      margin-left: 0.5rem;
+    }
+    .swiper-button-next{
+      margin-right: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof Swiper === 'undefined') {
+      console.error('Swiper is not loaded.');
+      return;
+    }
+
+    // Fix for Swiper v11+ (you must call Swiper from default export)
+    const swiper = new Swiper('.mySwiper', {
+      // loop: true,
+      spaceBetween: 0,
+      centeredSlides: true,
+      autoplay: {
+        delay: (parseInt({{ section.settings.slider_delay | json }}, 10) || 3) * 1000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on: {
+        slideChange: function () {
+          // console.log('Slide changed:', this.realIndex);
+          const bullets = document.querySelectorAll('.swiper-pagination-bullet');
+          bullets.forEach((bullet, index) => {
+            if (index === this.realIndex) {
+              bullet.classList.add('swiper-pagination-bullet-active');
+            } else {
+              bullet.classList.remove('swiper-pagination-bullet-active');
+            }
+          });
+        }
+      }
+    });
+  });
+</script>
+
+
+{% schema %}
+{
+  "name": "Custom Slider V2",
+  "settings": [
+    {
+      "type": "number",
+      "id": "slider_delay",
+      "default": 5,
+      "label": "Autoplay Delay (in seconds)"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "url",
+          "id": "slide_url",
+          "label": "Slide URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Slider V2",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

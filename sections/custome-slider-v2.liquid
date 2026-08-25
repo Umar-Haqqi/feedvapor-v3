@@ -1,0 +1,149 @@
+<div class="custom-slider-banner-wrapper">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide new-banner-destkop">
+          <a href="{{ shop.url }}{{ block.settings.slide_url }}">
+            <img
+              src="{{ block.settings.desktop_image | img_url: 'master' }}"
+              alt="slider banner desktop {{ forloop.index }}"
+              width="auto"
+              height="auto"
+            >
+          </a>
+        </div>
+        <div class="swiper-slide new-banner-mob">
+          <a href="{{ shop.url }}{{ block.settings.slide_url }}">
+            <img
+              src="{{ block.settings.mobile_image | img_url: 'master' }}"
+              alt="slider banner mobile {{ forloop.index }}"
+              width="auto"
+              height="auto"
+            >
+          </a>
+        </div>
+      {% endfor %}
+  </div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-pagination"></div>
+  </div>
+</div>
+
+{% comment %} <script>
+  const headerHeight = document.querySelector('.header-wrapper')?.clientHeight || 0;
+  document.querySelector(".main-slider-banner-wrapper").style.marginTop = `-${headerHeight + 2}px`;
+</script> {% endcomment %}
+
+<style>
+  .swiper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .new-banner-mob {
+    display: none;
+  }
+
+  @media only screen and (max-width: 850px) {
+    .new-banner-mob {
+      display: block;
+    }
+
+    .new-banner-destkop {
+      display: none;
+    }
+  }
+
+  .swiper-pagination-bullet {
+    border: 1px solid #fff;
+    width: 12px;
+    height: 12px;
+    background: transparent;
+    opacity: 1;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #fff !important;
+    border: 1px solid #fff;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+var swiper = new Swiper(".mySwiper", {
+    spaceBetween: 0,
+    centeredSlides: true,
+    autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+});
+</script>
+
+{% schema %}
+{
+  "name": "Custom Slider V2",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "url",
+          "id": "slide_url",
+          "label": "Slide URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Slider V2",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

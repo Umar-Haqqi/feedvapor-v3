@@ -1,0 +1,261 @@
+{% doc %}
+  @prompt
+    Fix the text slider/marquee block so it runs seamlessly on mobile. The current issue is that the text cuts off before completing and restarts mid-sentence. The fix should: duplicate the text content inside the container so there are two copies side by side, use CSS animation with translateX(-50%) so it scrolls exactly one full copy before looping, ensure the animation runs continuously with 'linear infinite', and make sure it works smoothly on mobile viewports without cutting off. Keep the existing block settings (text content, speed, etc.)., add bullets in between on the lines and color adjustment for teh bullet. 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-text-marquee-{{ ai_gen_id }} {
+    width: 100%;
+    overflow: hidden;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.padding_vertical }}px 0;
+    position: relative;
+  }
+
+  .ai-text-marquee-track-{{ ai_gen_id }} {
+    display: flex;
+    width: max-content;
+    animation: ai-marquee-scroll-{{ ai_gen_id }} {{ block.settings.scroll_speed }}s linear infinite;
+  }
+
+  .ai-text-marquee-content-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.text_spacing }}px;
+    white-space: nowrap;
+    align-items: center;
+  }
+
+  .ai-text-marquee-item-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    color: {{ block.settings.text_color }};
+    font-weight: {{ block.settings.font_weight }};
+    text-transform: {{ block.settings.text_transform }};
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.text_spacing }}px;
+  }
+
+  .ai-text-marquee-item-{{ ai_gen_id }}::after {
+    content: '';
+    width: {{ block.settings.bullet_size }}px;
+    height: {{ block.settings.bullet_size }}px;
+    background-color: {{ block.settings.bullet_color }};
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .ai-text-marquee-item-{{ ai_gen_id }}:last-child::after {
+    display: block;
+  }
+
+  @keyframes ai-marquee-scroll-{{ ai_gen_id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  {% if block.settings.pause_on_hover %}
+    .ai-text-marquee-track-{{ ai_gen_id }}:hover {
+      animation-play-state: paused;
+    }
+  {% endif %}
+
+  @media screen and (max-width: 749px) {
+    .ai-text-marquee-item-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-text-marquee-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-text-marquee-track-{{ ai_gen_id }}">
+    <div class="ai-text-marquee-content-{{ ai_gen_id }}">
+      {% if block.settings.marquee_text != blank %}
+        {% assign text_items = block.settings.marquee_text | split: '|' %}
+        {% for item in text_items %}
+          <span class="ai-text-marquee-item-{{ ai_gen_id }}">{{ item | strip }}</span>
+        {% endfor %}
+      {% else %}
+        <span class="ai-text-marquee-item-{{ ai_gen_id }}">Add your text here | Separate items with |</span>
+      {% endif %}
+    </div>
+    <div class="ai-text-marquee-content-{{ ai_gen_id }}" aria-hidden="true">
+      {% if block.settings.marquee_text != blank %}
+        {% assign text_items = block.settings.marquee_text | split: '|' %}
+        {% for item in text_items %}
+          <span class="ai-text-marquee-item-{{ ai_gen_id }}">{{ item | strip }}</span>
+        {% endfor %}
+      {% else %}
+        <span class="ai-text-marquee-item-{{ ai_gen_id }}">Add your text here | Separate items with |</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Text marquee",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "marquee_text",
+      "label": "Marquee text",
+      "default": "Free shipping on orders over $50 | New arrivals weekly | Shop now",
+      "info": "Separate items with | symbol"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Font size",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Bullet"
+    },
+    {
+      "type": "range",
+      "id": "bullet_size",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Bullet size",
+      "default": 6
+    },
+    {
+      "type": "color",
+      "id": "bullet_color",
+      "label": "Bullet color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_spacing",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Text spacing",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll speed",
+      "default": 20,
+      "info": "Lower is faster"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text marquee"
+    }
+  ]
+}
+{% endschema %}

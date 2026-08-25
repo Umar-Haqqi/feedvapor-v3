@@ -1,0 +1,802 @@
+<section id="flavour-profile-section" class="flavour-profile-section web-flavour-profile-section">
+  <div class="collection-tabs-container">
+    {% for block in section.blocks %}
+      <button
+        class="collection-tab curr-coll-active"
+        data-tab="{{ block.id }}"
+      >
+        {{ block.settings.tab_title }}
+      </button>
+    {% endfor %}
+  </div>
+
+  <div id="main-wrapper">
+    <h2 class="product-section-main-heading">{{ section.settings.title }}</h2>
+    <div class="product-tabs-container">
+      <div>
+        <div class="row-1 product-tabs-rows"></div>
+        <div class="row-2 product-tabs-rows"></div>
+        <div class="row-3 product-tabs-rows"></div>
+        <div class="row-4 product-tabs-rows"></div>
+        <div class="row-5 product-tabs-rows"></div>
+        <div class="row-6 product-tabs-rows"></div>
+      </div>
+    </div>
+
+    <div class="main-content-container">
+      <div class="flavour-profile-left">
+        <!-- product tabs container - content all product tabs available in current collection -->
+        <!-- <div class="product-tabs-container"></div> -->
+
+        <!-- main product content - contains product title, flavour points and footer svg -->
+        <h2 id="product-title" class="product-title"></h2>
+        <div class="point-main-container"></div>
+        <div class="footer-svg">
+          <img
+            class="footer-svg-img-new footer-svg-img-web"
+            src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/flavour-profile-footer-svg.svg?v=1711107909"
+            width="100%"
+            height="100%"
+            loading="lazy"
+            decoding="async"
+            alt="flavour profile footer"
+          >
+        </div>
+      </div>
+
+      <!-- product media content - contains product image, tagline and view product button -->
+      <div class="flavour-profile-right">
+        <div class="flavour-profile-media-container">
+          <img class="product-image" src="" width="100%" height="100%" loading="lazy" decoding="async" alt="product image">
+          <img class="tagline-image" src="" width="100%" height="100%" loading="lazy" decoding="async" alt="tagline image">
+          <span class="view-produxt-new view-produxt-web">
+            <a href="">View Product</a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="view-more-btn-mob-wrapper">
+      <span class="view-produxt-new view-produxt-mob">
+        <a href="">View Product</a>
+      </span>
+    </div>
+    <div class="footer-svg">
+      <img
+        class="footer-svg-img-new footer-svg-img-mob"
+        src="https://cdn.shopify.com/s/files/1/0860/7183/6978/files/flavour-profile-footer-svg.svg?v=1711107909"
+        width="100%"
+        height="100%"
+        loading="lazy"
+        decoding="async"
+        alt="flavour profile footer"
+      >
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-tabs-rows{
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+    margin-bottom: 5px;
+
+  }
+  .view-produxt-web, .footer-svg-img-web{
+    display: block;
+  }
+  .view-produxt-mob, .footer-svg-img-mob{
+    display: none;
+  }
+
+  .product-tabs-container{
+    width: 55%;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .flavour-profile-media-container{
+      margin-top: 0px !important;
+    }
+    .product-tabs-container {
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex-wrap: nowrap !important;;
+    }
+    .view-produxt-new {
+      width: fit-content;
+      top: 0 !important;
+    }
+    .view-more-btn-mob-wrapper{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 30px 0;
+    }
+    .view-produxt-web, .footer-svg-img-web{
+      display: none;
+    }
+    .view-produxt-mob, .footer-svg-img-mob{
+      display: block;
+    }
+
+  }
+
+  .flavour-profile-section{
+    width: 100%;
+    height: 100%;
+    padding: 3% 5% !important;
+    position: relative;
+    overflow: hidden;
+  }
+  .main-wrapper{
+    width: 100%;
+    height: auto;
+  }
+  .main-content-container{
+    width: 100%;
+    min-height: auto;
+    display: flex;
+    gap: 50px;
+  }
+  .main-content-container>.flavour-profile-left{
+    width: 50%;
+    height: auto;
+    position: relative;
+    z-index: 1;
+  }
+  .main-content-container>.flavour-profile-right{
+    width: 50%;
+    height: auto;
+  }
+  .product-section-main-heading {
+    font-size: 3.8rem !important;
+    margin: 10px 0;
+    font-family: ArupalaGrotesk-SuperBold;
+  }
+  .collection-tabs-container,.product-tabs-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* flex-wrap: wrap; */
+    gap: 5px;
+    margin: 20px 0;
+    overflow-x: scroll;
+    scrollbar-width: none;
+  }
+  .collection-tab{
+    padding: 0.6rem 1.8rem !important;
+    font-size: 16px;
+    border-radius: 20px !important;
+    font-family: "ArupalaGrotesk-SuperBold";
+  }
+  .product-tab{
+    padding: 0.4rem 1.2rem !important;
+    font-size: 12px;
+    border-radius: 10px !important;
+    font-family: Helvetica-Neue-Condensed-Bold;
+  }
+  .collection-tab,.product-tab{
+    border-width: 1px;
+    border-style: solid;
+    background-color: transparent;
+    width: auto;
+    cursor: pointer !important;
+    text-align: center !important;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .product-title {
+    margin-top: 5rem;
+    font-size: 6.5rem;
+    line-height: 6rem;
+    font-family: HelveticaNeue-CondensedBlack;
+    text-transform: uppercase;
+    text-wrap: nowrap;
+  }
+  .flavour-profile-media-container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    margin-top: -50px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .view-produxt-new{
+    position: relative;
+    top: 50px;
+  }
+  .product-image{
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 100%;
+    height: 140%;
+    /* object-fit: cover; */
+    aspect-ratio: 3/2;
+    overflow: visible;
+  }
+
+  @media (max-width: 435px) {
+    .product-image {
+        background: transparent !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .product-image{
+      top: 0%;
+      height: 110%;
+    }
+    .product-title{
+      font-size: 5.5rem;
+      line-height: 5rem;
+    }
+    .footer-svg{
+      margin-bottom: 20px;
+    }
+  }
+  @media (max-width: 600px) {
+    .product-title{
+      font-size: 3rem;
+      line-height: 3rem;
+    }
+    .point-boxes-container{
+      min-width: 200px;
+    }
+    .point-label {
+        font-size: 1rem !important;
+    }
+    .tagline-image{
+      left: -150% !important;
+      transform: translateX(0) !important;
+      width: 250% !important;
+    }
+  }
+
+  .tagline-image{
+    opacity: 0.2;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    aspect-ratio: 3/2;
+    overflow: visible;
+  }
+  .footer-svg{
+    margin-top: 30px;
+  }
+  .footer-svg-img-new{
+    width: 100%;
+    height: 100%;
+  }
+
+  .view-produxt-new{
+    background-color: #fff;
+    font-size: 12px !important;
+    /* border: 1px solid #dddddd !important; */
+    padding: 0.5rem 1.2rem 0.5rem 1.2rem !important;
+    border-radius: 20px !important;
+    cursor: pointer !important;
+    font-family: HelveticaNeue_Medium;
+    font-weight: 600 !important;
+    position: relative;
+    z-index: 1;
+  }
+  .view-produxt-new a{
+    text-decoration: none;
+  }
+
+
+  /* ======== flavour points ======== */
+  .point-main-container {
+    display: flex;
+    max-width: 220px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    margin-top:3rem;
+  }
+  .point-boxes-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .point-label {
+    font-size: 1.2rem;
+    font-family: "ArupalaGrotesk-SuperBold";
+  }
+  .boxes-wrapper {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .box {
+    width: 1.6rem !important;
+    height: 0.8rem !important;
+    display: block !important;
+  }
+  .icyness-adjustable{
+    width: 100%;
+    display:flex;
+    align-items: center;
+  }
+  .icyness-adjustable>.left-bar{
+    width: 100%;
+    height: 2px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+  }
+  .icyness-adjustable>.right-bar{
+    width: 100%;
+    height: 2px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+  }
+  .icyness-adjustable>.pointer{
+    width: 4px;
+    height: 4px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+  }
+
+   div:empty{
+    display:block;
+   }
+   .adjustIcynessWrapper{
+    width:100px;
+    display: flex;
+    align-items:center;
+   }
+   .centerCircle {
+    width: 24px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .leftBar{
+    width: 100%;
+    height: 8px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    position: relative;
+    right: -1px;
+  }
+  .rightBar{
+    width: 100%;
+    height: 7px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-left: none;
+    position: relative;
+    left: -1px;
+  }
+
+  /* ======== product switch animation ======== */
+  @keyframes flavourImgIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes flavourTaglineIn {
+    from { opacity: 0; }
+    to   { opacity: 0.2; }
+  }
+  @keyframes flavourTextIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .flavour-switch-anim .product-image {
+    animation: flavourImgIn 0.4s ease;
+  }
+  .flavour-switch-anim .tagline-image {
+    animation: flavourTaglineIn 0.4s ease;
+  }
+  .flavour-switch-anim .product-title {
+    animation: flavourTextIn 0.4s ease;
+  }
+  .flavour-switch-anim .point-main-container {
+    animation: flavourTextIn 0.45s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flavour-switch-anim .product-image,
+    .flavour-switch-anim .tagline-image,
+    .flavour-switch-anim .product-title,
+    .flavour-switch-anim .point-main-container {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const productCollections = {};
+</script>
+
+{% for block in section.blocks %}
+  <script>
+    productCollections["{{ block.id }}"] = [];
+    {% for product in block.settings.collection.products %}
+      productCollections["{{ block.id }}"].push({
+        "pod": {{ product | json }},
+        "id": {{ product.id | json }},
+        "podTitle": {{ product.title | json }},
+        "podHandle": {{ product.handle | json }},
+        "lineBreak": "{{ product.metafields.custom.line_break }}",
+        "podImg": {{ product.featured_image | json }},
+        "tagline": {{ product.metafields.custom.flavor_profile_tagline | img_url: '300x300' | json }},
+        "showTagline": "{{ product.metafields.custom.show_tagline_img }}",
+        "groupMedia": "{{ product.metafields.custom.group_image_url }}",
+        "bgBlack": "{{ product.metafields.custom.black_text }}",
+        "bgColor": "{{ product.metafields.custom.background_colour }}",
+        "level": {
+          "flavour": {{ product.metafields.custom.flavour_points | json }},
+          "sweetness": {{ product.metafields.custom.sweetness_points | json }},
+          "icyness": {{ product.metafields.custom.icyness_points | json }},
+          "isFlavourPointHalf": "{{ product.metafields.custom.is_flavour_point_half }}",
+          "isSweetnessPointHalf": "{{ product.metafields.custom.is_sweetness_point_half }}",
+          "isIcynessPointHalf": "{{ product.metafields.custom.is_icyness_point_half }}",
+          "isIcynessAdjustable": "{{ product.metafields.custom.is_icyness_adjustable }}"
+        }
+      });
+    {% endfor %}
+  </script>
+{% endfor %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const flavourProfileSection = document.querySelector('#flavour-profile-section');
+      const mainContentContainer = document.querySelector('.main-content-container');
+      const collectionTabs = document.querySelectorAll('.collection-tab');
+      const mainHeading = document.querySelector('.product-section-main-heading');
+      const productTitle = document.querySelector('#product-title');
+      const productImage = document.querySelector('.product-image');
+      const taglineImage = document.querySelector('.tagline-image');
+      const pointMainContainer = document.querySelector('.point-main-container');
+      const footerSvgImgWeb = document.querySelector('.footer-svg-img-web');
+      const footerSvgImgMob = document.querySelector('.footer-svg-img-mob');
+      const viewProductBtnWeb = document.querySelector('.view-produxt-web');
+      const viewProductBtnWebAnchor = document.querySelector('.view-produxt-web a');
+      const viewProductBtnMob = document.querySelector('.view-produxt-mob');
+      const viewProductBtnMobAnchor = document.querySelector('.view-produxt-mob a');
+
+      const rows = [
+        document.querySelector('.row-1'),
+        document.querySelector('.row-2'),
+        document.querySelector('.row-3'),
+        document.querySelector('.row-4'),
+        document.querySelector('.row-5'),
+        document.querySelector('.row-6')
+      ];
+
+      // --- footer svg sources keyed by product tag (white / black-text variants)
+      const FOOTER_SVGS = {
+        'pods-30k': {
+          light: 'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/specImgwhite.svg?v=1748195121',
+          dark:  'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/specImgblack.svg?v=1748195121'
+        },
+        'pods': {
+          light: 'https://cdn.shopify.com/s/files/1/0860/7183/6978/files/flavour-profile-footer-svg.svg?v=1711107909',
+          dark:  'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/Group_4766.svg?v=1714506118'
+        },
+        'freezie': {
+          light: 'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/freezie_footer_svg.png?v=1734915974',
+          dark:  'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/freezieblackSvg.svg?v=1734918873'
+        },
+        'sync': {
+          light: 'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/feed_sync_footer_svg.svg?v=1734915969',
+          dark:  'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/syncblackSvg.svg?v=1734918873'
+        },
+        'tank': {
+          light: 'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/Feed_Tank_-_Features-white_b0d6abec-c6fe-47de-9bd6-3b4d24fd9231.png?v=1787344762',
+          dark:  'https://cdn.shopify.com/s/files/1/0625/2140/9636/files/Feed_Tank_-_Features_-_black.svg?v=1781872398'
+        }
+      };
+
+      // --- single resize handler so group-media products don't accumulate listeners (memory leak fix)
+      let groupImageResizeHandler = null;
+      function clearGroupImageHandler() {
+        if (groupImageResizeHandler) {
+          window.removeEventListener('resize', groupImageResizeHandler);
+          groupImageResizeHandler = null;
+        }
+      }
+      function setResponsiveGroupImage(product) {
+        clearGroupImageHandler();
+        groupImageResizeHandler = function() {
+          const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
+          if (isSmallScreen) {
+            productImage.src = product.podImg;
+            productImage.style.objectFit = 'cover';
+          } else {
+            productImage.src = product.groupMedia;
+            productImage.style.objectFit = 'contain';
+          }
+          taglineImage.style.display = 'none';
+        };
+        window.addEventListener('resize', groupImageResizeHandler);
+        groupImageResizeHandler();
+      }
+
+      // --- helpers --------------------------------------------------------
+
+      const fillColor = (product) => product.bgBlack ? '#000' : '#fff';
+
+      // selected look: white/black background, product-coloured text
+      function styleTabSelected(el, product) {
+        el.style.backgroundColor = fillColor(product);
+        el.style.color = product.bgColor;
+        el.style.borderColor = fillColor(product);
+      }
+      // inactive look: product-coloured background, white/black text
+      function styleTabInactive(el, product) {
+        el.style.backgroundColor = product.bgColor;
+        el.style.color = fillColor(product);
+        el.style.borderColor = fillColor(product);
+      }
+
+      function applyViewButtonColors(product) {
+        const fill = fillColor(product);
+        const href = `/products/${product.podHandle}`;
+        viewProductBtnWeb.style.backgroundColor = fill;
+        viewProductBtnWeb.style.color = product.bgColor;
+        viewProductBtnWebAnchor.style.color = product.bgColor;
+        viewProductBtnWebAnchor.href = href;
+        viewProductBtnMob.style.backgroundColor = fill;
+        viewProductBtnMob.style.color = product.bgColor;
+        viewProductBtnMobAnchor.style.color = product.bgColor;
+        viewProductBtnMobAnchor.href = href;
+      }
+
+      function getProductTag(product) {
+        return product && product.pod && product.pod.tags ? product.pod.tags[0] : undefined;
+      }
+
+      function setProductTitle(product) {
+        const parts = product.podTitle.split(" ");
+        const br = product.lineBreak;
+        if (br > 0 && br <= parts.length) {
+          parts.splice(br, 0, "<br />");
+        }
+        productTitle.innerHTML = parts.join(" ");
+      }
+
+      // --- product media + footer svg (shared by tab click & default load)
+      function applyProductMedia(product) {
+        const tag = getProductTag(product);
+
+        if (tag === 'pods' || tag === 'pods-30k') {
+          clearGroupImageHandler();
+          productImage.src = product.podImg;
+          taglineImage.src = product.tagline;
+          productImage.style.objectFit = 'cover';
+          taglineImage.style.display = '';
+        } else if (tag === 'tank') {
+          clearGroupImageHandler();
+          productImage.src = product.groupMedia;
+          productImage.style.objectFit = 'cover';
+          taglineImage.style.display = 'none';
+          taglineImage.removeAttribute('src');
+        } else {
+          setResponsiveGroupImage(product);
+        }
+
+        const footer = FOOTER_SVGS[tag];
+        if (footer) {
+          const svg = product.bgBlack ? footer.dark : footer.light;
+          footerSvgImgWeb.src = svg;
+          footerSvgImgMob.src = svg;
+        }
+      }
+
+      function renderLevelPoints(product) {
+        pointMainContainer.innerHTML = '';
+        createBoxes(product.level.flavour, 'FLAVOUR', product.bgColor, product.bgBlack, product.level.isFlavourPointHalf, product.level.isIcynessAdjustable);
+        createBoxes(product.level.sweetness, 'SWEETNESS', product.bgColor, product.bgBlack, product.level.isSweetnessPointHalf, product.level.isIcynessAdjustable);
+        createBoxes(product.level.icyness, 'ICYNESS', product.bgColor, product.bgBlack, product.level.isIcynessPointHalf, product.level.isIcynessAdjustable);
+      }
+
+      // --- re-trigger the fade/slide animation on every switch
+      function triggerSwitchAnimation() {
+        mainContentContainer.classList.remove('flavour-switch-anim');
+        void mainContentContainer.offsetWidth; // force reflow so the animation restarts
+        mainContentContainer.classList.add('flavour-switch-anim');
+      }
+
+      // --- apply everything tied to a single product selection
+      function selectProduct(product, activeTabBtn) {
+        flavourProfileSection.style.backgroundColor = product.bgColor;
+
+        document.querySelectorAll('.product-tabs-container .product-tab')
+          .forEach(tab => styleTabInactive(tab, product));
+
+        setProductTitle(product);
+        applyProductMedia(product);
+
+        mainHeading.style.color = fillColor(product);
+        productTitle.style.color = fillColor(product);
+
+        renderLevelPoints(product);
+
+        if (activeTabBtn) {
+          styleTabSelected(activeTabBtn, product);
+        }
+
+        triggerSwitchAnimation();
+      }
+
+      // --- build product tabs for a collection and wire up their clicks
+      function updateProductContent(products) {
+        rows.forEach(row => { row.innerHTML = ''; });
+
+        products.forEach((product, prodIndex) => {
+          const productTabbtn = document.createElement('button');
+          productTabbtn.textContent = product.podTitle;
+          productTabbtn.classList.add('product-tab');
+
+          const rowIndex = Math.min(Math.floor(prodIndex / 5), rows.length - 1);
+          rows[rowIndex].appendChild(productTabbtn);
+
+          productTabbtn.addEventListener("click", () => {
+            // recolour collection tabs + view buttons to this product's scheme
+            applyViewButtonColors(product);
+            collectionTabs.forEach(collTab => styleTabInactive(collTab, product));
+            const currentCollActive = document.querySelector('.curr-coll-active');
+            if (currentCollActive) {
+              currentCollActive.style.backgroundColor = fillColor(product);
+              currentCollActive.style.color = product.bgColor;
+            }
+
+            selectProduct(product, productTabbtn);
+          });
+        });
+
+        // --- default state: first product of the collection
+        const firstProduct = products[0];
+        collectionTabs.forEach(collTab => styleTabInactive(collTab, firstProduct));
+        selectProduct(firstProduct, rows[0].querySelector('.product-tab'));
+      }
+
+      // --- initial load of the first collection
+      const firstCollectionId = collectionTabs[0].dataset.tab;
+      updateProductContent(productCollections[firstCollectionId]);
+
+      const firstProduct = productCollections[firstCollectionId][0];
+      styleTabSelected(collectionTabs[0], firstProduct);
+      applyViewButtonColors(firstProduct);
+
+      // --- collection tab switching
+      collectionTabs.forEach(tab => {
+        tab.addEventListener("click", function() {
+          collectionTabs.forEach(t => t.classList.remove("curr-coll-active"));
+
+          const collectionId = this.dataset.tab;
+          updateProductContent(productCollections[collectionId]);
+
+          const product = productCollections[collectionId][0];
+          styleTabSelected(this, product);
+          applyViewButtonColors(product);
+
+          this.classList.add('curr-coll-active');
+        });
+      });
+
+      // --- function to render the level point boxes
+      function createBoxes(level, label, bgColor, isBgBlack, isLevelPointHalf, isIcynessAdjustable) {
+        const pointContainer = document.createElement('div');
+        pointContainer.classList.add('point-boxes-container');
+
+        const labelElement = document.createElement('p');
+        labelElement.classList.add('point-label');
+        labelElement.textContent = label;
+        labelElement.style.color = isBgBlack ? '#000' : '#fff';
+
+        const boxesWrapper = document.createElement('div');
+        boxesWrapper.classList.add('boxes-wrapper');
+
+        // --- for freeze collection show icyness is adjustable else show point boxes
+        if (isIcynessAdjustable == "true" && labelElement.textContent === "ICYNESS") {
+          const adjustIcynessDiv = document.createElement('div');
+          adjustIcynessDiv.classList.add('adjustIcynessWrapper');
+
+          const leftBarDiv = document.createElement('div');
+          const centerCircle = document.createElement('div');
+          const rightBarDiv = document.createElement('div');
+
+          leftBarDiv.classList.add('leftBar');
+          centerCircle.classList.add('centerCircle');
+          rightBarDiv.classList.add('rightBar');
+
+          leftBarDiv.style.background = isBgBlack ? '#000' : '#fff';
+          leftBarDiv.style.border = `1px solid ${isBgBlack ? '#000' : '#fff'}`;
+          centerCircle.style.background = isBgBlack ? '#000' : '#fff';
+          centerCircle.style.border = `1px solid ${isBgBlack ? '#000' : '#fff'}`;
+          rightBarDiv.style.border = `1px solid ${isBgBlack ? '#000' : '#fff'}`;
+
+          adjustIcynessDiv.appendChild(leftBarDiv);
+          adjustIcynessDiv.appendChild(centerCircle);
+          adjustIcynessDiv.appendChild(rightBarDiv);
+
+          boxesWrapper.appendChild(adjustIcynessDiv);
+        } else {
+          for (let i = 0; i < 5; i++) {
+            const box = document.createElement('div');
+            box.classList.add('box');
+
+            // --- filling boxes for its set level
+            if (i < level) {
+              // --- half filled last level box
+              if (isLevelPointHalf == "true" && i === level - 1) {
+                box.style.background = `linear-gradient(to right, ${isBgBlack ? '#000' : '#fff'} 50%, ${bgColor} 50%)`;
+                box.style.border = `1px solid ${isBgBlack ? '#000' : '#fff'}`;
+              } else {
+                // --- fully filled point level boxes
+                box.style.backgroundColor = isBgBlack ? '#000' : '#fff';
+                box.style.border = `1px solid ${isBgBlack ? '#000' : '#fff'}`;
+              }
+            } else {
+              // --- empty level points boxes
+              box.style.backgroundColor = bgColor;
+              box.style.border = `1px solid ${isBgBlack ? '#000' : '#fff'}`;
+            }
+
+            boxesWrapper.appendChild(box);
+          }
+        }
+
+        pointContainer.appendChild(labelElement);
+        pointContainer.appendChild(boxesWrapper);
+        pointMainContainer.appendChild(pointContainer);
+      }
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Updated Flavour Profile",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Flavour Profile"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title",
+          "default": "Collection Title"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:sections.featured-collection.settings.collection.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Updated Flavour Profile",
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,258 @@
+<section class="toronto-section">
+  <h1>FEED Vapor: The Best of the Best Online Vape Store in Toronto</h1>
+  <a href="https://feedvapor.com/"><p>Visit our home page</p></a>
+  <p>
+    Toronto, or the SIX, as we like to call it, is home to a thriving vaping scene, which has resulted in numerous vape
+    stores popping up all across town. However, not all vape stores are equal, and we strongly stick to that statement.
+  </p>
+  <p>
+    FEED’s online store sets itself apart from all the other online vape stores in Toronto. We can confidently say that
+    because we truly believe in our product. Our vape devices are unlike any other on the market, and our batteries and
+    pods feature cutting-edge technology that will change the way you vape.
+  </p>
+  <p>
+    FEED is a brand created by Canadian vapers for Canadian vapers. Whether you’re looking to puff on a cool flavor
+    during the summer or looking for something refreshing to keep you energized as you explore the streets of Toronto,
+    our vape store has something for everyone.
+  </p>
+  <h3>Buy Your Favorite Vape from the Best Online Vape Store in Toronto</h3>
+  <p>
+    Whether you’re looking for a cutting-edge disposable vape that puts all other disposable vapes to shame like the
+    FEED FREEZIE, a starter kit, or a revolutionary product like the FEED SYNC that aims to push the envelope on vape
+    technology, you won’t find a better online vape store in Toronto than ours.
+  </p>
+  <p>
+    There’s a reason we don’t shy away from calling ourselves the best online vape store in Toronto, and that’s because
+    we’re stocked to the brim. We’ve got a plethora of products, meaning there’s something for everyone on our website.
+  </p>
+  <p>
+    New vapers just entering the scene should look into purchasing a starter kit because it includes everything they
+    need to get started right away. Just pick your favorite flavor and place the order.
+  </p>
+
+  <!-- Feed Sync content -->
+
+  <h3>FEED SYNC in Toronto - The Smartest Vape Device on the Market</h3>
+  <p>
+    If you’re an experienced vaper looking for something that packs more of a punch and features revolutionary
+    technology, FEED SYNC might be the perfect product for you. FEED SYNC is the smartest vape on the market, and the
+    only Toronto vape store carrying it is ours!
+  </p>
+  <p>
+    It features a revolutionary touch-screen and comes with four distinct power modes. However, what really makes it the
+    smartest vape on the market is that it also connects to your phone, allowing you to use it as a smart gadget. After
+    connecting to your phone, the FEED SYNC allows you to receive and view text notifications and social media updates
+    on it. The icing on the cake is that we also made sure to include call functionality, meaning you can accept or
+    decline phone calls using your vape. Life has never been simpler!
+  </p>
+
+  <!-- Start Feed Sync Product Slider -->
+  <div class="slider product-slider-wrapper">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for product in collections['feed-sync-25k-disposable-vape'].products %}
+          <div class="swiper-slide">
+            <div>
+              {% render 'custom-card',
+                card_product: product,
+                is_out_of_stock: false,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: section.settings.image_shape,
+                show_shop_now: true,
+                section_id: section.id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+    </div>
+  </div>
+  <!-- End Feed Sync Product Slider -->
+
+  <!-- Feed Freezie Content -->
+  <h3>FEED FREEZIE in Toronto - A Disposable Vape with no Equals</h3>
+  <p>
+    Vapers looking for a fun and simple product can also opt for the FEED FREEZIE. It’s our premium disposable vape. The
+    FEED FREEZIE is perfect for vapers who don’t want a long-lasting vape. So, if you’re someone who’s here for a good
+    time and not a long time, it’s the perfect product for you. It comes in ten different flavors because we wanted a
+    diversity of flavor profiles for every palette.
+  </p>
+  <p>
+    Our store also carries accessories such as batteries and pods. Our 18ML pods come pre-filled, meaning they’ll last
+    you anywhere from about two weeks to a month, depending on your usage. Our 550mAh batteries can be charged via
+    Type-C chargers.
+  </p>
+
+  <!-- Start Feed Freezie Product Slider -->
+  <div class="slider product-slider-wrapper">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for product in collections['feed-freezie-disposable-pods'].products %}
+          <div class="swiper-slide">
+            <div>
+              {% render 'custom-card',
+                card_product: product,
+                is_out_of_stock: false,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: section.settings.image_shape,
+                show_shop_now: true,
+                section_id: section.id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+    </div>
+  </div>
+  <!-- End Feed Freezie Product Slider -->
+
+  <h3>Buy a Vape Online from One of the Top Vape Stores in Toronto</h3>
+  <p>
+    Forget about getting in your car and driving to your local vape store. Convenience matters. You can now buy a vape
+    online from one of the top vape stores in Toronto without ever setting a foot outside your home.
+  </p>
+  <p>
+    FEED isn’t just another vape manufacturer, nor are we a typical corporation. We’re a brand focused on the Canadian
+    vaper. Our dedication to providing unparalleled customer service and an unforgettable experience means that you get
+    the best of the best when you shop in our store. Moreover, we focus on individuality and uniqueness, meaning we’re
+    the perfect brand for people who want to stand out as leaders rather than get lost in the crowd of followers. Check
+    out our store today to embark on a journey that will change how you vape forever.
+  </p>
+
+  <div class="slider">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for product in collections['vape-pods-in-canada'].products %}
+          <div class="swiper-slide">
+            <div>
+              {% render 'custom-card',
+                card_product: product,
+                is_out_of_stock: false,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: section.settings.image_shape,
+                show_shop_now: true,
+                section_id: section.id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+    </div>
+  </div>
+</section>
+
+<style>
+  .slider {
+    position: relative;
+    height: 100%;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    /* text-align: center;
+    font-size: 18px;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+  }
+
+  /* .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  } */
+</style>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 0,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      "@0.00": {
+        slidesPerView: 1,
+        spaceBetween: 10,
+      },
+      "@0.75": {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      "@1.00": {
+        slidesPerView: 3,
+        spaceBetween: 40,
+      },
+      "@1.50": {
+        slidesPerView: 4,
+        spaceBetween: 50,
+      },
+    },
+  });
+</script>
+
+<!-- SEO Scheme -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Feed Vapor",
+    "image": "https://feedvapor.com/cdn/shop/files/FEED_WHITE.svg?v=1713363727&width=120",
+    "@id": "",
+    "url": "https://feedvapor.com/pages/best-online-vape-store-in-toronto",
+    "telephone": "",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "",
+      "addressLocality": "Toronto",
+      "addressRegion": "ON",
+      "postalCode": "",
+      "addressCountry": "CA"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 43.6532,
+      "longitude": 79.3832
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
+    },
+    "sameAs": "https://www.instagram.com/feedvapor"
+  }
+</script>
+
+{% schema %}
+  {
+  "name": "Toronto-section",
+  "presets":[
+    {
+      "name": "Toronto-section"
+    }
+  ]
+}
+{% endschema %}

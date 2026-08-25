@@ -1,0 +1,19 @@
+/* .related-products {
+  display: block;
+}
+
+/* editByMe -- edit text for u may also like on product page */
+.related-products__heading {
+  /* margin: 0 0 3rem; */
+  margin: 0;
+  color: #fff;
+  font-family: ArupalaGrotesk-SuperBold;
+}
+*/ .related-products {
+  display: block;
+}
+
+.related-products__heading {
+  /* margin: 0 0 3rem; */
+  margin-top: 3rem;
+}

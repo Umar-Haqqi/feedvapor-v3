@@ -1,0 +1,50 @@
+<section id="my_video_section">
+  <a href="{{ shop.url }}/collections/feed-tank">
+    <div class="video-container">
+      <video id="my_video" width="100%" height="100%" autoplay muted playsinline>
+        {% comment %} <source src="https://cdn.shopify.com/videos/c/o/v/30f3a7d045d244acb6fe04108b8a3bb9.mp4" type="video/mp4"> {% endcomment %}
+        <source src="https://cdn.shopify.com/videos/c/o/v/fda71b7b085046438589d23bb2b6d579.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </a>
+</section>
+
+<!-- JavaScript -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var video = document.getElementById("my_video");
+
+    // Function to handle the ended event
+    function handleEnded() {
+      // Pause the video
+      video.pause();
+
+      // After 4 seconds, play the video again
+      setTimeout(function() {
+        video.play();
+      }, 4000);
+    }
+
+    // Add event listener for the ended event
+    video.addEventListener("ended", handleEnded);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "CustomVideo",
+  "settings": [
+    {
+      "type":"text",
+      "label":"Heading",
+      "id":"Heading"
+    }
+  ],
+  "presets":[
+    {
+      "name": "CustomVideo"
+    }
+  ]
+}
+{% endschema %}

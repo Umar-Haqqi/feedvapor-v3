@@ -1,0 +1,157 @@
+<div class="about-section">
+  <div class="description-wrapper-container" id="description-container">
+    <h1 class="main-heading" style="padding-top: 50px">{{ section.settings.mainHeading }}</h1>
+    {% for block in section.blocks %}
+      {% if block.type == 'subHeading' %}
+        <h3 class="sub-heading">{{ block.settings.subheading }}</h3>
+      {% elsif block.type == 'subHeadingH2' %}
+        <h2 class="sub-heading">{{ block.settings.subheadingh2 }}</h2>
+      {% elsif block.type == 'listItem' %}
+        <ul class="list-content">
+          <li class="list-item">{{ block.settings.list }}</li>
+        </ul>
+      {% elsif block.type == 'lastListItem' %}
+        <ul class="last-list-content">
+          <li class="last-list-item">{{ block.settings.lastList }}</li>
+        </ul>
+      {% elsif block.type == 'content' %}
+        <p class="para">{{ block.settings.content }}</p>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="read-more-btn-div">
+    <span class="read-more-btn" id="read-more-btn">Read More</span>
+  </div>
+</div>
+
+
+<style>
+  .description-wrapper-container {
+    position: relative;
+    max-height: 400px; /* Adjust this value to the desired number of lines */
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .description-wrapper-container.expanded {
+    max-height: none;
+  }
+  .read-more-btn-div{
+    display: flex;
+    justify-content: center;
+  }
+  .read-more-btn {
+    display: inline-block;
+    cursor: pointer;
+    color: #000;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 5px 20px;
+    border-radius: 20px;
+  }
+  
+  
+  .list-content {
+    margin-bottom: 0px;
+  }
+
+  .last-list-content {
+    margin-bottom: 20px;
+  }
+</style>
+
+<script>
+  document.getElementById('read-more-btn').addEventListener('click', function() {
+  var container = document.getElementById('description-container');
+  
+  if (container.classList.contains('expanded')) {
+    container.classList.remove('expanded');
+    this.innerText = 'Read More';
+  } else {
+    container.classList.add('expanded');
+    this.innerText = 'Read Less';
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "About section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "mainHeading",
+      "label": "Section Title",
+      "default": "About Feed Vapor"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subHeadingH2",
+      "name": "Sub Heading h2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheadingh2",
+          "label": "Sub Heading H2",
+          "default": "Learn about US"
+        }
+      ]
+    },
+    {
+      "type": "subHeading",
+      "name": "Sub Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Sub Heading",
+          "default": "Learn about US"
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "Content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content",
+          "default": "Hello world"
+        }
+      ]
+    },
+    {
+      "type": "listItem",
+      "name": "List Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "list",
+          "label": "List Item",
+          "default": "List item"
+        }
+      ]
+    },
+    {
+      "type": "lastListItem",
+      "name": "Last List Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "lastList",
+          "label": "Last List Item",
+          "default": "Last List item"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About section"
+    }
+  ]
+}
+{% endschema %}

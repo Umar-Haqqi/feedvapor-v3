@@ -1,0 +1,248 @@
+<section id="my_custom_section_CGC">
+  {% if section.settings.heading != blank %}
+    <h2 class="section-heading" style="{% if section.settings.heading_color != blank %}color:{{ section.settings.heading_color }};{% endif %}">
+      {{ section.settings.heading }}
+    </h2>
+  {% endif %}
+
+  <div class="coll-main-div">
+    {% for block in section.blocks %}
+      {% if block.type == 'card' %}
+        {% liquid
+          assign card_bg = block.settings.card_bg_color
+          assign title_color = block.settings.title_color
+          assign footer_color = block.settings.footer_text_color
+          assign footer_highlight_color = block.settings.footer_highlight_color
+          assign btn_bg = block.settings.button_bg_color
+          assign btn_text_color = block.settings.button_text_color
+          assign footer_bg = block.settings.footer_bg_color
+          assign title_lines = block.settings.title | split: '-'
+        %}
+
+        <div class="card" {{ block.shopify_attributes }} style="{% if card_bg != blank %}background-color:{{ card_bg }};{% endif %}">
+          <div class="card-body">
+            <div class="card-content">
+
+              {% if block.settings.logo_1 != blank or block.settings.logo_2 != blank %}
+                <div class="logos">
+                  {% if block.settings.logo_1 != blank %}
+                    <img
+                      src="{{ block.settings.logo_1 | image_url: width: 300 }}"
+                      alt="{{ block.settings.logo_1.alt | default: block.settings.title | escape }}"
+                      width="{{ block.settings.logo_1.width }}"
+                      height="{{ block.settings.logo_1.height }}"
+                      loading="lazy"
+                    >
+                  {% endif %}
+                  {% if block.settings.logo_2 != blank %}
+                    <img
+                      src="{{ block.settings.logo_2 | image_url: width: 300 }}"
+                      alt="{{ block.settings.logo_2.alt | default: block.settings.title | escape }}"
+                      width="{{ block.settings.logo_2.width }}"
+                      height="{{ block.settings.logo_2.height }}"
+                      loading="lazy"
+                    >
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              {% if block.settings.title != blank %}
+                <div class="brandname">
+                  {% for line in title_lines %}
+                    <h3 style="{% if title_color != blank %}color:{{ title_color }};{% endif %}">{{ line | strip }}</h3>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              {% if block.settings.button_link != blank %}
+                <a class="shop-now-btn" href="{{ block.settings.button_link }}">
+                  <button
+                    class="btn"
+                    style="{% if btn_bg != blank %}background-color:{{ btn_bg }};{% endif %}{% if btn_text_color != blank %}color:{{ btn_text_color }};{% endif %}"
+                  >
+                    {{ block.settings.button_text | default: 'Shop now' }}
+                  </button>
+                </a>
+              {% endif %}
+            </div>
+
+            {% if block.settings.product_image != blank %}
+              <div class="card-img">
+                <img
+                  src="{{ block.settings.product_image | image_url: width: 800 }}"
+                  alt="{{ block.settings.product_image.alt | default: block.settings.title | escape }}"
+                  width="{{ block.settings.product_image.width }}"
+                  height="{{ block.settings.product_image.height }}"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+          </div>
+
+          {% if block.settings.footer_text != blank or block.settings.footer_highlight_text != blank %}
+            <div class="card-footer" style="background-color:{{ footer_bg }};">
+              <p style="{% if footer_color != blank %}color:{{ footer_color }};{% endif %}">
+                {{ block.settings.footer_text }}
+                {% if block.settings.footer_highlight_text != blank %}
+                  <span class="footer-span" style="{% if footer_highlight_color != blank %}color:{{ footer_highlight_color }};{% endif %}">
+                    {{ block.settings.footer_highlight_text }}
+                  </span>
+                {% endif %}
+              </p>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CustomCollectionGridCard",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Heading",
+      "id": "heading"
+    },
+    {
+      "type": "color",
+      "label": "Heading color",
+      "id": "heading_color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_1",
+          "label": "Logo 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo_2",
+          "label": "Logo 2 (optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Use a hyphen (-) where you want a line break, e.g. PODS-SYSTEMS",
+          "default": "PODS-SYSTEMS"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product image"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Button background color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "text",
+          "id": "footer_text",
+          "label": "Footer text",
+          "default": "BUY 5 GET 1 FREE"
+        },
+        {
+          "type": "text",
+          "id": "footer_highlight_text",
+          "label": "Footer highlighted text",
+          "default": "| MIX AND MATCH FLAVOURS"
+        },
+        {
+          "type": "color",
+          "id": "footer_text_color",
+          "label": "Footer text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "footer_highlight_color",
+          "label": "Footer highlight color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "card_bg_color",
+          "label": "Card background color"
+        },
+        {
+          "type": "color",
+          "id": "footer_bg_color",
+          "label": "Footer background color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CustomCollectionGridCard",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "PODS-SYSTEMS",
+            "title_color": "#ffffff",
+            "button_text": "Shop now",
+            "button_link": "/collections/vape-pods-in-canada",
+            "button_bg_color": "#ffffff",
+            "button_text_color": "#000000",
+            "footer_text": "BUY 5 GET 1 FREE",
+            "footer_highlight_text": "| MIX AND MATCH FLAVOURS",
+            "footer_text_color": "#ffffff",
+            "footer_highlight_color": "#ffffff",
+            "footer_bg_color": "#ffffff"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "DISPO--SABLES",
+            "title_color": "#000000",
+            "button_text": "Shop now",
+            "button_link": "/collections/feed-freezie-disposable-pods",
+            "button_bg_color": "#000000",
+            "button_text_color": "#ffffff",
+            "footer_text": "BUY 5 GET 1 FREE",
+            "footer_highlight_text": "| MIX AND MATCH FLAVOURS",
+            "footer_text_color": "#000000",
+            "footer_highlight_color": "#000000",
+            "footer_bg_color": "#ffffff"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
