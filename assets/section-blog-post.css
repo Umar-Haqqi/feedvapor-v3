@@ -96,6 +96,20 @@
   margin-bottom: 3rem;
 }
 
+/* Force pasted blog content (from Word/Google Docs, which often carries inline
+   black text colors) to match the theme's standard text color used across
+   product, collection and home page content. */
+.article-template__title,
+.article-template__content,
+.article-template__content * {
+  color: rgb(var(--color-foreground)) !important;
+}
+
+.article-template__content a,
+.article-template__content a * {
+  color: inherit !important;
+}
+
 .article-template__social-sharing {
   margin-top: 3rem;
 }
