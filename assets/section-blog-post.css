@@ -97,17 +97,31 @@
 }
 
 /* Force pasted blog content (from Word/Google Docs, which often carries inline
-   black text colors) to match the theme's standard text color used across
-   product, collection and home page content. */
+   black text colors) to stay readable on the theme's dark background.
+   Scoped to the blog article only — does not affect any other template. */
 .article-template__title,
-.article-template__content,
-.article-template__content * {
-  color: rgb(var(--color-foreground)) !important;
+.article-template__content h1,
+.article-template__content h2,
+.article-template__content h3,
+.article-template__content h4,
+.article-template__content h5,
+.article-template__content h6 {
+  color: #ffffff !important;
 }
 
+.article-template__content,
+.article-template__content p,
+.article-template__content li,
 .article-template__content a,
-.article-template__content a * {
-  color: inherit !important;
+.article-template__content span,
+.article-template__content strong,
+.article-template__content em,
+.article-template__content b,
+.article-template__content i,
+.article-template__content blockquote,
+.article-template__content td,
+.article-template__content th {
+  color: #dddddd !important;
 }
 
 .article-template__social-sharing {
