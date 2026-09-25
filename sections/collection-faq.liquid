@@ -1,0 +1,116 @@
+{%- comment -%}
+  Collection FAQ (collapsible)
+  ----------------------------
+  A reusable accordion-style FAQ section, styled to match the brand FAQ used
+  on the homepage (sections/custom-faq.liquid — same .faq-main-box /
+  .accordion-item classes from assets/base.css, so it looks identical there).
+
+  Unlike custom-faq.liquid (which has hardcoded questions), this section is
+  driven entirely by blocks, so it can be dropped into ANY template — any
+  collection, the homepage, a page template, etc. — from the theme
+  customizer, each with its own set of questions.
+{%- endcomment -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .faq-main-box {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+{%- if section.blocks.size > 0 -%}
+  <collection-faq-accordion>
+    <section class="faq-main-box">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="faq-main-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      <div class="faq-tab-content" style="display:block;">
+        <div class="accordion">
+          {%- for block in section.blocks -%}
+            <div class="accordion-item" {{ block.shopify_attributes }}>
+              <div class="accordion-item-header">
+                <p>{{ block.settings.question }}</p>
+                <div class="faq-direction-icon"><i class="ri-arrow-down-s-line"></i></div>
+              </div>
+              <div class="accordion-item-body">
+                <div class="accordion-item-body-content">
+                  {{ block.settings.answer }}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  </collection-faq-accordion>
+
+  <script src="{{ 'collection-faq.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collapsible FAQ",
+  "tag": "section",
+  "class": "section collection-faq-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Question goes here?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Answer goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Collapsible FAQ",
+      "blocks": [
+        { "type": "question" },
+        { "type": "question" },
+        { "type": "question" }
+      ]
+    }
+  ]
+}
+{% endschema %}

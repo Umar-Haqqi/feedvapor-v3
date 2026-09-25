@@ -1,0 +1,414 @@
+{%- comment -%}
+  Flavour Profile Filter
+  ----------------------
+  Renders a "SELECT YOUR FLAVOUR PROFILE" tab nav (one tab per flavour block)
+  above a stack of product grids, one grid per flavour. Clicking a tab
+  smooth-scrolls the page down to that flavour's grid (anchor-jump style,
+  all grids stay on one page — nothing is hidden/shown via JS filtering).
+
+  Matching a product to a flavour block:
+    A product belongs to a flavour block when one of its tags (case-insensitive)
+    exactly equals that block's "tag" setting. Add the tag to a product in
+    Shopify admin (Products > select product(s) > Tags field, or use the
+    bulk editor to tag many products at once) to make it appear under that
+    flavour.
+
+    Alternative: if you'd rather use a metafield instead of tags, change the
+    `has_tag` check below to compare against
+    `product.metafields.custom.flavour_profile.value` (create that metafield
+    definition first, type: Single line text or List of single line text).
+{%- endcomment -%}
+
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'flavour-profile-filter.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.enable_quick_add -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  #shopify-section-{{ section.id }} .flavour-profile-heading {
+    background: {{ section.settings.heading_bg_color }};
+    color: {{ section.settings.heading_text_color }};
+  }
+{%- endstyle -%}
+
+<flavour-profile-filter class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient flavour-profile-section">
+  <div class="page-width">
+    {%- if section.settings.show_promo and section.settings.promo_message != blank -%}
+      <div class="flavour-promo-banner">{{ section.settings.promo_message }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.heading_text != blank -%}
+      <h2 class="flavour-profile-heading"><span>{{ section.settings.heading_text }}</span></h2>
+    {%- endif -%}
+
+    <div class="flavour-tabs" role="tablist" aria-label="{{ section.settings.heading_text | default: 'Flavour profile' | escape }}">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign flavour_tag_lower = block.settings.tag | strip | downcase
+          assign flavour_count = 0
+          for product in collection.products
+            assign has_tag = false
+            for tag in product.tags
+              assign tag_lower = tag | downcase
+              if tag_lower == flavour_tag_lower
+                assign has_tag = true
+              endif
+            endfor
+            if has_tag
+              assign flavour_count = flavour_count | plus: 1
+            endif
+          endfor
+        -%}
+        {%- if flavour_count > 0 -%}
+          <a
+            href="#flavour-{{ block.id }}"
+            class="flavour-tab"
+            id="flavour-tab-{{ block.id }}"
+            data-flavour-tab
+            data-target="flavour-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.swatch_image != blank -%}
+              <span class="flavour-swatch flavour-swatch--image" aria-hidden="true">
+                {{
+                  block.settings.swatch_image
+                  | image_url: width: 176
+                  | image_tag: loading: 'lazy', widths: '88,176', sizes: '88px'
+                }}
+              </span>
+            {%- else -%}
+              <span
+                class="flavour-swatch{% if block.settings.swatch_color_2 != blank %} flavour-swatch--dual{% endif %}"
+                style="--swatch-color-1: {{ block.settings.swatch_color }}; --swatch-color-2: {{ block.settings.swatch_color_2 | default: block.settings.swatch_color }};"
+                aria-hidden="true"
+              ></span>
+            {%- endif -%}
+            <span class="flavour-tab-label">{{ block.settings.label }}</span>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- paginate collection.products by 250 -%}
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign flavour_tag_lower = block.settings.tag | strip | downcase
+        assign flavour_count = 0
+        for product in collection.products
+          assign has_tag = false
+          for tag in product.tags
+            assign tag_lower = tag | downcase
+            if tag_lower == flavour_tag_lower
+              assign has_tag = true
+            endif
+          endfor
+          if has_tag
+            assign flavour_count = flavour_count | plus: 1
+          endif
+        endfor
+      -%}
+      {%- if flavour_count > 0 -%}
+        <div class="page-width flavour-grid-section" id="flavour-{{ block.id }}">
+          <h3 class="flavour-grid-heading">
+            {{ block.settings.label }}
+            <span class="flavour-grid-count">{{ flavour_count }} item{% if flavour_count != 1 %}s{% endif %}</span>
+          </h3>
+
+          <ul
+            class="
+              grid product-grid
+              grid--{{ section.settings.columns_mobile }}-col-tablet-down
+              grid--{{ section.settings.columns_desktop }}-col-desktop
+            "
+          >
+            {%- liquid
+              assign quick_add_type = 'none'
+              if section.settings.enable_quick_add
+                assign quick_add_type = 'standard'
+              endif
+              assign loop_index = 0
+            -%}
+            {%- for product in collection.products -%}
+              {%- assign has_tag = false -%}
+              {%- for tag in product.tags -%}
+                {%- assign tag_lower = tag | downcase -%}
+                {%- if tag_lower == flavour_tag_lower -%}
+                  {%- assign has_tag = true -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if has_tag -%}
+                {%- assign loop_index = loop_index | plus: 1 -%}
+                {%- assign lazy_load = true -%}
+                {%- if loop_index <= 2 -%}
+                  {%- assign lazy_load = false -%}
+                {%- endif -%}
+                {%- assign is_out_of_stock = true -%}
+                {%- for variant in product.variants -%}
+                  {%- if variant.available -%}
+                    {%- assign is_out_of_stock = false -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                <li class="grid__item">
+                  {% render 'card-product',
+                    card_product: product,
+                    is_out_of_stock: is_out_of_stock,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    lazy_load: lazy_load,
+                    quick_add: quick_add_type,
+                    section_id: section.id
+                  %}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endpaginate -%}
+
+  {%- if section.settings.show_description and section.settings.description_html != blank -%}
+    <div class="page-width flavour-seo-description">
+      {{ section.settings.description_html }}
+    </div>
+  {%- endif -%}
+</flavour-profile-filter>
+
+<script src="{{ 'flavour-profile-filter.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Flavour Profile Filter",
+  "tag": "section",
+  "class": "section flavour-profile-filter-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading text",
+      "default": "Select Your Flavour Profile"
+    },
+    {
+      "type": "color",
+      "id": "heading_bg_color",
+      "label": "Heading background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "heading_text_color",
+      "label": "Heading text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Promo banner (optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo",
+      "label": "Show promo banner",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "promo_message",
+      "label": "Promo message",
+      "default": "SAVINGS ALERT: BUY 4 GET 1 FREE (ADD ANY 5 TO GET 5TH FREE)"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show product rating",
+      "default": false,
+      "info": "To display a rating, add a product rating app."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "label": "Enable quick add button",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Number of columns on desktop",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Number of columns on mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "SEO description (optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description below the grids",
+      "default": false
+    },
+    {
+      "type": "html",
+      "id": "description_html",
+      "label": "Description HTML",
+      "info": "Raw HTML, shown below all flavour grids. Used for SEO/collection copy."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "flavour",
+      "name": "Flavour",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Fruit"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Product tag to match",
+          "default": "flavour-fruit",
+          "info": "Add this exact tag (case-insensitive) to a product in Shopify admin to place it under this flavour."
+        },
+        {
+          "type": "header",
+          "content": "Swatch"
+        },
+        {
+          "type": "image_picker",
+          "id": "swatch_image",
+          "label": "Swatch image (optional)",
+          "info": "If set, this image fills the circle instead of the colors below. Square image recommended (e.g. 100x100px) — it's cropped to a circle automatically."
+        },
+        {
+          "type": "color",
+          "id": "swatch_color",
+          "label": "Swatch color",
+          "default": "#D9536A",
+          "info": "Used only when no swatch image is set above."
+        },
+        {
+          "type": "color",
+          "id": "swatch_color_2",
+          "label": "Swatch color 2 (optional)",
+          "info": "Leave blank for a single-color circle, or set to render a two-tone circle (e.g. Fruit + Ice). Ignored if a swatch image is set."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Flavour Profile Filter",
+      "blocks": [
+        { "type": "flavour", "settings": { "label": "Fruit", "tag": "flavour-fruit", "swatch_color": "#D9536A" } },
+        {
+          "type": "flavour",
+          "settings": {
+            "label": "Fruit + Ice",
+            "tag": "flavour-fruit-ice",
+            "swatch_color": "#4EC3C7",
+            "swatch_color_2": "#D9536A"
+          }
+        },
+        { "type": "flavour", "settings": { "label": "Mint", "tag": "flavour-mint", "swatch_color": "#4EC3C7" } },
+        { "type": "flavour", "settings": { "label": "Tobacco", "tag": "flavour-tobacco", "swatch_color": "#2B2B2B" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -639,6 +639,15 @@
 
       // --- build product tabs for a collection and wire up their clicks
       function updateProductContent(products) {
+        // Defensive guard: a block whose "collection" setting points at an
+        // empty/misconfigured collection would otherwise crash here (product[0]
+        // is undefined, then styleTabInactive/selectProduct throw reading its
+        // properties) and take down the rest of the section's init with it.
+        if (!products || !products.length) {
+          console.warn('[Flavour Profile] Selected collection has no products — check the block\'s Collection setting.');
+          return;
+        }
+
         rows.forEach(row => { row.innerHTML = ''; });
 
         products.forEach((product, prodIndex) => {
@@ -674,21 +683,25 @@
       updateProductContent(productCollections[firstCollectionId]);
 
       const firstProduct = productCollections[firstCollectionId][0];
-      styleTabSelected(collectionTabs[0], firstProduct);
-      applyViewButtonColors(firstProduct);
+      if (firstProduct) {
+        styleTabSelected(collectionTabs[0], firstProduct);
+        applyViewButtonColors(firstProduct);
+      }
 
       // --- collection tab switching
       collectionTabs.forEach(tab => {
         tab.addEventListener("click", function() {
-          collectionTabs.forEach(t => t.classList.remove("curr-coll-active"));
-
           const collectionId = this.dataset.tab;
-          updateProductContent(productCollections[collectionId]);
-
           const product = productCollections[collectionId][0];
+          if (!product) {
+            console.warn('[Flavour Profile] Tab "' + this.textContent.trim() + '" has no products — ignoring click.');
+            return;
+          }
+
+          collectionTabs.forEach(t => t.classList.remove("curr-coll-active"));
+          updateProductContent(productCollections[collectionId]);
           styleTabSelected(this, product);
           applyViewButtonColors(product);
-
           this.classList.add('curr-coll-active');
         });
       });
@@ -795,7 +808,7 @@
   ],
   "presets": [
     {
-      "name": "Updated Flavour Profile",
+      "name": "Updated Flavour Profile"
     }
   ]
 }
