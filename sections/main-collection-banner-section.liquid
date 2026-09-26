@@ -1,19 +1,19 @@
 {% if template.name == 'collection' and collection %}
-  <div class="banner-div">
-    {% assign matched_block = null %}
+  {% assign matched_block = null %}
 
-    {%- for block in section.blocks -%}
-      {%- if block.settings.collection == blank -%}
-        {%- if matched_block == null -%}
-          {% assign matched_block = block %}
-        {%- endif -%}
-      {%- elsif block.settings.collection.id == collection.id -%}
+  {%- for block in section.blocks -%}
+    {%- if block.settings.collection == blank -%}
+      {%- if matched_block == null -%}
         {% assign matched_block = block %}
-        {% break %}
       {%- endif -%}
-    {%- endfor -%}
+    {%- elsif block.settings.collection.id == collection.id -%}
+      {% assign matched_block = block %}
+      {% break %}
+    {%- endif -%}
+  {%- endfor -%}
 
-    {% if matched_block %}
+  {% if matched_block and (matched_block.settings.desktop_image or matched_block.settings.mobile_image) %}
+    <div class="banner-div">
       {% if matched_block.settings.desktop_image %}
         <img
           class="banner-div-img web-coll-banner-image"
@@ -33,32 +33,34 @@
           height="auto"
         >
       {% endif %}
-    {% endif %}
 
-    {% if section.settings.overlay_image %}
-      <img
-        class="banner-div-text"
-        src="{{ section.settings.overlay_image | image_url: width: 1200 }}"
-        alt="Banner overlay text"
-        width="auto"
-        height="auto"
-      >
-    {% endif %}
-  </div>
+      {% if section.settings.overlay_image %}
+        <img
+          class="banner-div-text"
+          src="{{ section.settings.overlay_image | image_url: width: 1200 }}"
+          alt="Banner overlay text"
+          width="auto"
+          height="auto"
+        >
+      {% endif %}
+    </div>
+  {% endif %}
 {% endif %}
 
 <style>
   .banner-div{
       width: 100%;
-      height: 400px;
-      position: relative;
+      display: grid;
       overflow: hidden;
   }
-  .banner-div img{
+  .banner-div > img{
+      grid-column: 1;
+      grid-row: 1;
+  }
+  .banner-div img.banner-div-img{
+      display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
+      height: auto;
       filter: brightness(0.8);
   }
 
@@ -66,10 +68,8 @@
       width: 100%;
       height: 50%;
       object-fit: contain;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      align-self: center;
+      justify-self: center;
   }
 
     /* Default: Desktop */
