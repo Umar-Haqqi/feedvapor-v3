@@ -12,7 +12,14 @@
     {%- endif -%}
   {%- endfor -%}
 
-  {% if matched_block and (matched_block.settings.desktop_image or matched_block.settings.mobile_image) %}
+  {% assign has_banner_image = false %}
+  {% if matched_block %}
+    {% if matched_block.settings.desktop_image or matched_block.settings.mobile_image %}
+      {% assign has_banner_image = true %}
+    {% endif %}
+  {% endif %}
+
+  {% if has_banner_image %}
     <div class="banner-div">
       {% if matched_block.settings.desktop_image %}
         <img
