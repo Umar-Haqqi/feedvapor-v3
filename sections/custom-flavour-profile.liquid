@@ -560,8 +560,13 @@
         viewProductBtnMobAnchor.href = href;
       }
 
+      // Shopify always returns product.tags alphabetically sorted, never in the
+      // order they were added — so we can't rely on tags[0] to be the category
+      // tag. Match against the known category tags instead.
+      const KNOWN_PRODUCT_TAGS = Object.keys(FOOTER_SVGS);
       function getProductTag(product) {
-        return product && product.pod && product.pod.tags ? product.pod.tags[0] : undefined;
+        if (!product || !product.pod || !product.pod.tags) return undefined;
+        return product.pod.tags.find(function(t) { return KNOWN_PRODUCT_TAGS.includes(t); });
       }
 
       function setProductTitle(product) {
